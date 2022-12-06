@@ -12,5 +12,4 @@ document.querySelector("body").addEventListener("click", function (e) {
     contactMenu.classList.remove("contact-menu--active");
     contactMenu.classList.add("contact-menu--inactive");
   }
-  console.log(e);
 });
