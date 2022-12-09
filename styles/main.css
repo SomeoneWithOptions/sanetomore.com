@@ -177,7 +177,7 @@ h6 {
   gap: 0.5rem;
 }
 .contact-menu__list-item {
-  animation: contactMenuMarginRemove 0.5s ease-in-out both;
+  animation: contactMenuMarginRemove 0.5s ease both;
 }
 .contact-menu__link {
   color: inherit;
