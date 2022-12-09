@@ -239,7 +239,21 @@ h6 {
 }
 @media (min-width: 320px) {
   body {
-    background-image: linear-gradient(to left bottom, #602135, #542132, #48212e, #3c202a, #301f25, #291c20, #221a1c, #1b1718, #161314, #110e0e, #090708, #000000);
+    background-image: linear-gradient(
+      to left bottom,
+      #602135,
+      #542132,
+      #48212e,
+      #3c202a,
+      #301f25,
+      #291c20,
+      #221a1c,
+      #1b1718,
+      #161314,
+      #110e0e,
+      #090708,
+      #000000
+    );
     height: --webkit-fill-available;
   }
   .page-1 {
@@ -404,7 +418,21 @@ h6 {
   }
 }
 body {
-  background-image: linear-gradient(to left bottom, #602135, #542132, #48212e, #3c202a, #301f25, #291c20, #221a1c, #1b1718, #161314, #110e0e, #090708, #000000);
+  background-image: linear-gradient(
+    to left bottom,
+    #602135,
+    #542132,
+    #48212e,
+    #3c202a,
+    #301f25,
+    #291c20,
+    #221a1c,
+    #1b1718,
+    #161314,
+    #110e0e,
+    #090708,
+    #000000
+  );
   background-color: var(--color-neutral-900);
   color: white;
   font-family: "Poppins", sans-serif;
