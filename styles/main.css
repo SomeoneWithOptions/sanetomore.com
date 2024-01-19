@@ -172,7 +172,7 @@ p {
         justify-content: center;
         line-height: 1.5;
         animation: 1s ease-in-out both titleEntry;
-        padding: 4rem 0 0 8%;
+        padding: 4rem 0 0 4%;
         text-shadow: 5px 5px 5px rgba(0, 0, 0, .25)
     }
 
@@ -183,15 +183,16 @@ p {
         font-weight: 300;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        /* justify-content: center; */
         padding-right: 8%;
         padding-left: 8%;
         text-align: right;
         /* position: relative; */
         gap: .5rem;
         width: 35ch;
-        text-shadow: 3px 3px 0 rgba(0, 0, 0, .25);
-        animation: 1s ease-in-out .5s both pEntry
+        text-shadow: 2px 2px 0 rgba(0, 0, 0, .25);
+        animation: 1s ease-in-out .5s both pEntry;
+        text-align: left;
     }
 
 }
@@ -286,12 +287,12 @@ body {
 .page-1__paragraph {
     /* border: solid 1px white; */
     text-align: right;
+
     margin-right: 10rem;
     width: 100%;
 }
 
-.contact-menu{
+.contact-menu {
     top: 3%;
     right: 3%;
 }
-
