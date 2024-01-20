@@ -9,11 +9,6 @@
     padding: 0
 }
 
-body {
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased
-}
-
 canvas,
 img,
 picture,
@@ -241,12 +236,12 @@ p {
     animation: 1s both contactMenuHide
 }
 
-
 body {
     background: url("/assets/background.svg") no-repeat center center fixed;
     background-size: cover;
     color: #fff;
     font-family: Poppins, sans-serif;
+    line-height: 1.5;
 }
 
 .page-1__header {
@@ -265,7 +260,6 @@ body {
 
 .page-1__paragraph {
     text-align: right;
-
     margin-right: 10rem;
     width: 100%;
 }
