@@ -1,3 +1,5 @@
+
+
 const contactLink = document.querySelector(".page-1__header__menu")
 const contactMenu = document.querySelector(".contact-menu");
 function toggleMenu() {

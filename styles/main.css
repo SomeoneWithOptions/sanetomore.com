@@ -253,5 +253,7 @@ body {
 .page-1__paragraph {
     text-align: right;
     margin-right: 10rem;
-    width: 100%
+    width: 100%;
+    font-family: "Azeret Mono", monospace;
+    font-weight: 300;
 }
