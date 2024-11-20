@@ -257,3 +257,8 @@ body {
     font-family: "Azeret Mono", monospace;
     font-weight: 300;
 }
+
+a {
+    color: white;
+    text-decoration: none;
+}
