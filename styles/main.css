@@ -122,11 +122,8 @@ body {
     padding: 2rem 1.5rem
 }
 
-.page-1 {
-    width: min(60rem, 100%);
-}
-
 .page-1__container {
+    width : 90vw;
     background-color: rgba(0, 0, 0, 0.35);
     border-radius: 1.5rem;
     padding: clamp(2rem, 8vw, 4rem);
