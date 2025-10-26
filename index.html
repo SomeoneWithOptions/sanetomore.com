@@ -8,11 +8,8 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap" rel="stylesheet" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Azeret+Mono:ital,wght@0,100..900;1,100..900&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&family=Azeret+Mono:wght@300;400&display=swap"
+        rel="stylesheet" />
     <link rel="stylesheet" href="./styles/main.css" />
 
     <script src="./scripts/script.js" defer></script>
@@ -20,7 +17,7 @@
 </head>
 
 <body>
-    <div class="contact-menu" data-show="false">
+    <div class="contact-menu contact-menu--hidden" id="contact-menu" aria-hidden="true">
         <ul class="contact-menu__list">
             <li class="contact-menu__list-item">
                 <a class="contact-menu__link" href="https://diafestivo.co/" target="_blank"
@@ -49,10 +46,13 @@
         </ul>
     </div>
 
-    <div class="page-1">
+    <main class="page-1">
         <div class="page-1__container">
             <header class="page-1__header">
-                <span class="page-1__header__menu">Contact</span>
+                <button type="button" class="page-1__header__menu" aria-expanded="false" aria-haspopup="true"
+                    aria-controls="contact-menu">
+                    Contact
+                </button>
             </header>
             <h1 class="page-1__title">Andres Castellanos</h1>
             <div class="page-1__paragraph">
@@ -61,7 +61,7 @@
                 <p>I love Drumming, Running and lately working on Web Projects.</p>
             </div>
         </div>
-    </div>
+    </main>
 </body>
 
 </html>
