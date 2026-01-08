@@ -325,7 +325,8 @@ a {
 
     .profile-card__image {
         width: 100%;
-        max-width: 350px;
+        max-width: 260px;
+        max-height: 350px;
         height: auto;
         border-radius: 1.5rem;
     }
