@@ -38,33 +38,13 @@ p {
 :root {
     --shadow-color: 0deg 0% 0%;
     --shadow-elevation-medium: 0.3px 0.3px 0.5px hsl(var(--shadow-color) / 0.44), 0.8px 0.9px 1.3px -0.7px hsl(var(--shadow-color) / 0.42), 1.7px 1.8px 2.7px -1.4px hsl(var(--shadow-color) / 0.41), 3.6px 3.7px 5.6px -2.1px hsl(var(--shadow-color) / 0.39), 7.1px 7.4px 11.2px -2.7px hsl(var(--shadow-color) / 0.37);
-    --full-screen-height: calc(100vh - 8% - 4rem);
     --color-primary-400: #FA7268;
     --color-neutral-900: #101010
 }
 
 @keyframes titleEntry {
-    from {
-        opacity: 0;
-        transform: translateY(-30%)
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0)
-    }
-}
-
-@keyframes pEntry {
-    from {
-        opacity: 0;
-        transform: translateX(-10%)
-    }
-
-    to {
-        opacity: 1;
-        transform: translateX(0)
-    }
+    from { opacity: 0; transform: translateY(-30%) }
+    to { opacity: 1; transform: translateY(0) }
 }
 
 @keyframes contactEntry {
@@ -72,7 +52,6 @@ p {
         opacity: 0;
         transform: translateY(-100%)
     }
-
     to {
         opacity: 1;
         transform: translateY(0)
@@ -84,7 +63,6 @@ p {
         opacity: 0;
         transform: translateY(-100%)
     }
-
     to {
         opacity: 1;
         transform: translateY(0)
@@ -96,112 +74,121 @@ p {
         opacity: 1;
         transform: translateY(0)
     }
-
     to {
         opacity: 0;
         transform: translateY(-100%)
     }
 }
 
-@keyframes contactMenuMarginAdd {
+@keyframes contactMenuShowMobile {
     from {
-        margin: 0
+        opacity: 0;
+        transform: translate(-50%, -100%)
     }
-
     to {
-        margin: .5rem 0
+        opacity: 1;
+        transform: translate(-50%, 0)
     }
 }
 
-@keyframes contactMenuMarginRemove {
+@keyframes contactMenuHideMobile {
     from {
-        margin: .5rem 0
+        opacity: 1;
+        transform: translate(-50%, 0)
     }
-
     to {
-        margin: 0
+        opacity: 0;
+        transform: translate(-50%, -100%)
     }
 }
 
-@media(min-width:320px) {
-    .contact-menu {
-        top: 8%;
-        right: 8%
-    }
-
-    .page-1 {
-        height: 98%
-    }
-
-    .page-1__header {
-        padding: 1rem 1rem 0 0
-    }
-
-    .page-1__title {
-        font-size: clamp(3.5rem, 9vw, 20rem);
-        font-weight: 400;
-        height: 50%;
-        display: flex;
-        justify-content: center;
-        line-height: 1.5;
-        animation: 1s ease-in-out both titleEntry;
-        padding: 4rem 0 0 4%;
-        text-shadow: 5px 5px 5px rgba(0, 0, 0, .25)
-    }
-
-    .page-1__paragraph {
-        margin-top: 3rem;
-        font-size: clamp(1.3rem, 2.5vw, 1.8rem);
-        height: 40%;
-        font-weight: 300;
-        display: flex;
-        flex-direction: column;
-        padding-right: 8%;
-        padding-left: 8%;
-        gap: .5rem;
-        width: 35ch;
-        text-shadow: 2px 2px 0 rgba(0, 0, 0, .25);
-        animation: 1s ease-in-out .5s both pEntry;
-        text-align: left
-    }
+/* Base Styles */
+body {
+    background: url("../assets/background.svg") center center/cover no-repeat fixed;
+    color: #fff;
+    font-family: Poppins, sans-serif;
+    line-height: 1.5;
+    min-height: 100vh;
 }
 
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+.page-1 {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.page-1__container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* Header & Menu Trigger */
+.page-1__header {
+    margin-top: 1rem;
+    text-align: right;
+    padding-right: 2rem;
+    z-index: 110;
+    animation: 1s ease-in-out 1s both contactEntry;
+}
+
+.page-1__header__menu {
+    cursor: pointer;
+    text-shadow: 3px 3px 0 rgba(0, 0, 0, .25);
+    font-size: 1.5rem;
+    transition: opacity 0.3s ease;
+}
+
+.page-1__header__menu:hover {
+    opacity: 0.8;
+}
+
+/* Contact Menu Card */
 .contact-menu {
-    position: absolute;
+    position: fixed;
     background-color: #000;
     color: #fff;
     padding: 1.5rem 3rem;
     border-radius: .5rem;
     box-shadow: var(--shadow-elevation-medium);
-    z-index: 1;
-    transform: translateY(-150%);
-    top: 3%;
-    right: 3%
+    z-index: 100;
+    top: 2rem;
+    right: 2rem;
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.contact-menu--active {
+    animation: 1s both contactMenuShow;
+    pointer-events: all;
+}
+
+.contact-menu--inactive {
+    animation: 1s both contactMenuHide;
 }
 
 .contact-menu__list {
     list-style: none;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    gap: .75rem;
     align-items: center;
-    padding: 0;
-    margin: 0;
-    gap: .5rem
-}
-
-.contact-menu__list-item {
-    animation: .5s ease-in-out both contactMenuMarginRemove
 }
 
 .contact-menu__link {
     color: inherit;
     text-decoration: none;
-    font-size: 1.2rem
-}
-
-.contact-menu__link:visited {
-    color: inherit
+    font-size: 1.2rem;
+    position: relative;
 }
 
 .contact-menu__link:after {
@@ -210,55 +197,123 @@ p {
     width: 0%;
     height: 2px;
     background-color: var(--color-primary-400);
-    transition: width .3s
+    transition: width .3s;
+    margin-top: 2px;
 }
 
 .contact-menu__link:hover::after {
     width: 100%
 }
 
-.contact-menu--active {
-    animation: 1s both contactMenuShow
+/* Profile Card */
+.profile-card-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    padding: 1rem;
 }
 
-.contact-menu--active li {
-    animation: .5s .5s both contactMenuMarginAdd
+.profile-card {
+    background: rgba(16, 16, 16, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 2.5rem;
+    padding: 3.5rem;
+    max-width: 950px;
+    width: 95%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 4rem;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+    animation: 1s ease-out both titleEntry;
 }
 
-.contact-menu--inactive {
-    animation: 1s both contactMenuHide
+.profile-card__image {
+    width: 350px;
+    height: auto;
+    border-radius: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
 }
 
-body {
-    background: url("/assets/background.svg") center center/cover no-repeat fixed;
-    color: #fff;
-    font-family: Poppins, sans-serif;
-    line-height: 1.5
+.profile-card__content {
+    display: flex;
+    flex-direction: column;
 }
 
-.page-1__header {
-    margin-top: 1rem;
-    text-align: right;
-    font-size: clamp(1rem, 1vw, 1.5rem);
-    animation: 1s ease-in-out 1s both contactEntry
+.profile-card__title {
+    font-size: clamp(1.8rem, 4vw, 2.2rem);
+    font-weight: 400;
+    margin-bottom: 0.75rem;
 }
 
-.page-1__header__menu {
-    cursor: pointer;
-    text-shadow: 3px 3px 0 rgba(0, 0, 0, .25);
-    font-size: 1.5rem;
-    margin-right: 5%
-}
-
-.page-1__paragraph {
-    text-align: right;
-    margin-right: 10rem;
-    width: 100%;
+.profile-card__description {
     font-family: "Azeret Mono", monospace;
+    font-size: 0.95rem;
     font-weight: 300;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.85);
 }
 
-a {
-    color: white;
+.profile-card__description p {
+    margin-bottom: 0.5rem;
+}
+
+.profile-card__description a {
+    color: var(--color-primary-400);
     text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s;
+}
+
+.profile-card__description a:hover {
+    border-color: var(--color-primary-400);
+}
+
+/* Mobile Responsive */
+@media (max-width: 850px) {
+    .page-1__header {
+        text-align: center;
+        padding-right: 0;
+        margin-top: 1.5rem;
+    }
+
+    .profile-card-container {
+        align-items: flex-start;
+        padding-top: 1rem;
+    }
+
+    .profile-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 2rem;
+        padding: 2.5rem 1.5rem;
+        border-radius: 2rem;
+    }
+
+    .profile-card__image {
+        width: 100%;
+        max-width: 240px;
+    }
+
+    .contact-menu {
+        top: 6rem;
+        left: 50%;
+        right: auto;
+        transform: translate(-50%, -100%);
+        width: 90%;
+        max-width: 320px;
+        padding: 1.5rem;
+    }
+
+    .contact-menu--active {
+        animation: 1s both contactMenuShowMobile;
+    }
+
+    .contact-menu--inactive {
+        animation: 1s both contactMenuHideMobile;
+    }
 }
