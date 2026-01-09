@@ -221,7 +221,7 @@ html, body {
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 2.5rem;
     padding: 3.5rem;
-    max-width: 950px;
+    max-width: 1100px;
     width: 95%;
     display: flex;
     flex-direction: row;
@@ -229,6 +229,10 @@ html, body {
     gap: 4rem;
     box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
     animation: 1s ease-out both titleEntry;
+}
+
+.profile-card__image-container {
+    flex-shrink: 0;
 }
 
 .profile-card__image {
