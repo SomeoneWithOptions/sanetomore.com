@@ -316,6 +316,10 @@ html, body {
         max-width: 240px;
     }
 
+    .profile-card__description {
+        text-align: left;
+    }
+
     .contact-menu {
         top: 6rem;
         left: 50%;
