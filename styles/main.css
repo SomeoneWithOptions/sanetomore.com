@@ -38,7 +38,7 @@ p {
 :root {
     --shadow-color: 0deg 0% 0%;
     --shadow-elevation-medium: 0.3px 0.3px 0.5px hsl(var(--shadow-color) / 0.44), 0.8px 0.9px 1.3px -0.7px hsl(var(--shadow-color) / 0.42), 1.7px 1.8px 2.7px -1.4px hsl(var(--shadow-color) / 0.41), 3.6px 3.7px 5.6px -2.1px hsl(var(--shadow-color) / 0.39), 7.1px 7.4px 11.2px -2.7px hsl(var(--shadow-color) / 0.37);
-    --color-primary-400: #FA7268;
+    --color-primary-400: #cf3fff;
     --color-neutral-900: #101010
 }
 
