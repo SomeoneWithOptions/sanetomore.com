@@ -133,10 +133,10 @@ html, body {
 
 /* Header & Menu Trigger */
 .page-1__header {
-    margin-top: 1rem;
+    margin-top: 2rem;
     text-align: right;
-    padding-right: 2rem;
-    z-index: 110;
+    padding-right: 4rem;
+    z-index: 100;
     animation: 1s ease-in-out 1s both contactEntry;
 }
 
@@ -159,7 +159,7 @@ html, body {
     padding: 1.5rem 3rem;
     border-radius: .5rem;
     box-shadow: var(--shadow-elevation-medium);
-    z-index: 100;
+    z-index: 110;
     top: 2rem;
     right: 2rem;
     transform: translateY(-100%);
