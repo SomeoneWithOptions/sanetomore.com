@@ -4,12 +4,14 @@ const contactMenu = document.querySelector(".contact-menu");
 function openMenu() {
     contactMenu.classList.remove("contact-menu--inactive");
     contactMenu.classList.add("contact-menu--active");
+    contactLink.classList.add("active");
 }
 
 function closeMenu() {
     if (contactMenu.classList.contains("contact-menu--active")) {
         contactMenu.classList.remove("contact-menu--active");
         contactMenu.classList.add("contact-menu--inactive");
+        contactLink.classList.remove("active");
     }
 }
 
@@ -29,7 +31,6 @@ document.addEventListener("click", function (e) {
     }
 });
 
-// Optional: Close on Escape key
 document.addEventListener("keydown", function (e) {
     if (e.key === "Escape") {
         closeMenu();
