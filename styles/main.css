@@ -61,44 +61,53 @@ p {
 @keyframes contactMenuShow {
     from {
         opacity: 0;
-        transform: translateY(-100%)
+        transform: translateY(-20px);
     }
     to {
         opacity: 1;
-        transform: translateY(0)
+        transform: translateY(0);
     }
 }
 
 @keyframes contactMenuHide {
     from {
         opacity: 1;
-        transform: translateY(0)
+        transform: translateY(0);
     }
     to {
         opacity: 0;
-        transform: translateY(-100%)
+        transform: translateY(-20px);
     }
 }
 
 @keyframes contactMenuShowMobile {
     from {
         opacity: 0;
-        transform: translate(-50%, -100%)
+        transform: translate(-50%, -20px);
     }
     to {
         opacity: 1;
-        transform: translate(-50%, 0)
+        transform: translate(-50%, 0);
     }
 }
 
 @keyframes contactMenuHideMobile {
     from {
         opacity: 1;
-        transform: translate(-50%, 0)
+        transform: translate(-50%, 0);
     }
     to {
         opacity: 0;
-        transform: translate(-50%, -100%)
+        transform: translate(-50%, -20px);
+    }
+}
+
+@keyframes pageFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
     }
 }
 
@@ -119,6 +128,45 @@ html, body {
     overflow-x: hidden;
 }
 
+/* Noise texture overlay for subtle depth */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Custom minimal scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(16, 16, 16, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+    transition: background 0.3s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+/* Firefox scrollbar */
+html {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.15) rgba(16, 16, 16, 0.5);
+}
+
 .page-1 {
     min-height: 100vh;
     min-height: 100dvh;
@@ -131,6 +179,9 @@ html, body {
     display: flex;
     flex-direction: column;
     position: relative;
+    z-index: 2;
+    opacity: 0;
+    animation: pageFadeIn 0.8s ease-out 0.2s forwards;
 }
 
 /* Header & Menu Trigger */
@@ -153,6 +204,28 @@ html, body {
     opacity: 0.8;
 }
 
+.page-1__header__menu.active {
+    opacity: 0.8;
+    position: relative;
+}
+
+.page-1__header__menu.active::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--color-primary-400);
+    box-shadow: 0 0 8px rgba(207, 63, 255, 0.5);
+    animation: underlineGrow 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes underlineGrow {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+}
+
 /* Contact Menu Card */
 .contact-menu {
     position: fixed;
@@ -170,12 +243,12 @@ html, body {
 }
 
 .contact-menu--active {
-    animation: 1s both contactMenuShow;
+    animation: 0.6s cubic-bezier(0.16, 1, 0.3, 1) both contactMenuShow;
     pointer-events: all;
 }
 
 .contact-menu--inactive {
-    animation: 1s both contactMenuHide;
+    animation: 0.4s cubic-bezier(0.16, 1, 0.3, 1) both contactMenuHide;
 }
 
 .contact-menu__list {
@@ -207,6 +280,27 @@ html, body {
     width: 100%
 }
 
+/* Stagger animation for menu items */
+.contact-menu__list-item {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.contact-menu--active .contact-menu__list-item {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Stagger delays for each menu item */
+.contact-menu--active .contact-menu__list-item:nth-child(1) { transition-delay: 0ms; }
+.contact-menu--active .contact-menu__list-item:nth-child(2) { transition-delay: 60ms; }
+.contact-menu--active .contact-menu__list-item:nth-child(3) { transition-delay: 120ms; }
+.contact-menu--active .contact-menu__list-item:nth-child(4) { transition-delay: 180ms; }
+.contact-menu--active .contact-menu__list-item:nth-child(5) { transition-delay: 240ms; }
+.contact-menu--active .contact-menu__list-item:nth-child(6) { transition-delay: 300ms; }
+
 /* Profile Card */
 .profile-card-container {
     display: flex;
@@ -217,10 +311,10 @@ html, body {
 }
 
 .profile-card {
-    background: rgba(16, 16, 16, 0.7);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(16, 16, 16, 0.6);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 2.5rem;
     padding: 3.5rem;
     max-width: 1100px;
@@ -229,8 +323,20 @@ html, body {
     flex-direction: row;
     align-items: center;
     gap: 4rem;
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+    box-shadow:
+        0 30px 60px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
     animation: 1s ease-out both titleEntry;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, box-shadow;
+}
+
+.profile-card:hover {
+    transform: translateY(-8px);
+    box-shadow:
+        0 40px 80px rgba(0, 0, 0, 0.7),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
 .profile-card__image-container {
@@ -243,6 +349,14 @@ html, body {
     border-radius: 2rem;
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform;
+}
+
+.profile-card:hover .profile-card__image {
+    transform: scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
 }
 
 .profile-card__content {
@@ -266,17 +380,37 @@ html, body {
 
 .profile-card__description p {
     margin-bottom: 0.5rem;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: textFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.profile-card__description p:nth-child(1) { animation-delay: 0.3s; }
+.profile-card__description p:nth-child(2) { animation-delay: 0.4s; }
+.profile-card__description p:nth-child(3) { animation-delay: 0.5s; }
+.profile-card__description p:nth-child(4) { animation-delay: 0.6s; }
+
+@keyframes textFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .profile-card__description a {
     color: var(--color-primary-400);
     text-decoration: none;
     border-bottom: 1px solid transparent;
-    transition: border-color 0.3s;
+    transition: border-color 0.3s, text-shadow 0.3s;
 }
 
 .profile-card__description a:hover {
     border-color: var(--color-primary-400);
+    text-shadow: 0 0 8px rgba(207, 63, 255, 0.3);
 }
 
 .recurly-link {
@@ -317,11 +451,24 @@ html, body {
         gap: 2rem;
         padding: 2.5rem 1.5rem;
         border-radius: 2rem;
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                    box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .profile-card:hover {
+        transform: translateY(-4px);
+        box-shadow:
+            0 30px 60px rgba(0, 0, 0, 0.6),
+            inset 0 1px 0 rgba(255, 255, 255, 0.05);
     }
 
     .profile-card__image {
         width: 100%;
         max-width: 240px;
+    }
+
+    .profile-card:hover .profile-card__image {
+        transform: scale(1.01);
     }
 
     .profile-card__description {
@@ -339,10 +486,40 @@ html, body {
     }
 
     .contact-menu--active {
-        animation: 1s both contactMenuShowMobile;
+        animation: 0.6s cubic-bezier(0.16, 1, 0.3, 1) both contactMenuShowMobile;
     }
 
     .contact-menu--inactive {
-        animation: 1s both contactMenuHideMobile;
+        animation: 0.4s cubic-bezier(0.16, 1, 0.3, 1) both contactMenuHideMobile;
+    }
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    .page-1__container {
+        animation: none;
+        opacity: 1;
+    }
+
+    .profile-card {
+        transition: none;
+    }
+
+    .profile-card:hover {
+        transform: none;
+    }
+
+    .profile-card__image {
+        transition: none;
+    }
+
+    .profile-card:hover .profile-card__image {
+        transform: none;
+    }
+
+    .profile-card__description p {
+        animation: none;
+        opacity: 1;
+        transform: none;
     }
 }
