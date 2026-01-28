@@ -61,44 +61,44 @@ p {
 @keyframes contactMenuShow {
     from {
         opacity: 0;
-        transform: translateY(-100%)
+        transform: translateY(-20px);
     }
     to {
         opacity: 1;
-        transform: translateY(0)
+        transform: translateY(0);
     }
 }
 
 @keyframes contactMenuHide {
     from {
         opacity: 1;
-        transform: translateY(0)
+        transform: translateY(0);
     }
     to {
         opacity: 0;
-        transform: translateY(-100%)
+        transform: translateY(-20px);
     }
 }
 
 @keyframes contactMenuShowMobile {
     from {
         opacity: 0;
-        transform: translate(-50%, -100%)
+        transform: translate(-50%, -20px);
     }
     to {
         opacity: 1;
-        transform: translate(-50%, 0)
+        transform: translate(-50%, 0);
     }
 }
 
 @keyframes contactMenuHideMobile {
     from {
         opacity: 1;
-        transform: translate(-50%, 0)
+        transform: translate(-50%, 0);
     }
     to {
         opacity: 0;
-        transform: translate(-50%, -100%)
+        transform: translate(-50%, -20px);
     }
 }
 
@@ -204,6 +204,28 @@ html {
     opacity: 0.8;
 }
 
+.page-1__header__menu.active {
+    opacity: 0.8;
+    position: relative;
+}
+
+.page-1__header__menu.active::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--color-primary-400);
+    box-shadow: 0 0 8px rgba(207, 63, 255, 0.5);
+    animation: underlineGrow 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes underlineGrow {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+}
+
 /* Contact Menu Card */
 .contact-menu {
     position: fixed;
@@ -221,12 +243,12 @@ html {
 }
 
 .contact-menu--active {
-    animation: 1s both contactMenuShow;
+    animation: 0.6s cubic-bezier(0.16, 1, 0.3, 1) both contactMenuShow;
     pointer-events: all;
 }
 
 .contact-menu--inactive {
-    animation: 1s both contactMenuHide;
+    animation: 0.4s cubic-bezier(0.16, 1, 0.3, 1) both contactMenuHide;
 }
 
 .contact-menu__list {
@@ -257,6 +279,27 @@ html {
 .contact-menu__link:hover::after {
     width: 100%
 }
+
+/* Stagger animation for menu items */
+.contact-menu__list-item {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.contact-menu--active .contact-menu__list-item {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Stagger delays for each menu item */
+.contact-menu--active .contact-menu__list-item:nth-child(1) { transition-delay: 0ms; }
+.contact-menu--active .contact-menu__list-item:nth-child(2) { transition-delay: 60ms; }
+.contact-menu--active .contact-menu__list-item:nth-child(3) { transition-delay: 120ms; }
+.contact-menu--active .contact-menu__list-item:nth-child(4) { transition-delay: 180ms; }
+.contact-menu--active .contact-menu__list-item:nth-child(5) { transition-delay: 240ms; }
+.contact-menu--active .contact-menu__list-item:nth-child(6) { transition-delay: 300ms; }
 
 /* Profile Card */
 .profile-card-container {
@@ -443,11 +486,11 @@ html {
     }
 
     .contact-menu--active {
-        animation: 1s both contactMenuShowMobile;
+        animation: 0.6s cubic-bezier(0.16, 1, 0.3, 1) both contactMenuShowMobile;
     }
 
     .contact-menu--inactive {
-        animation: 1s both contactMenuHideMobile;
+        animation: 0.4s cubic-bezier(0.16, 1, 0.3, 1) both contactMenuHideMobile;
     }
 }
 
