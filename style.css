@@ -5,6 +5,10 @@
     --grid-color: #333;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -137,12 +141,15 @@ section {
 }
 
 .list-layout span::before {
-    content: '→';
+    content: '';
     position: absolute;
     left: 0;
-    color: var(--accent);
-    font-size: 0.8em;
-    top: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    background-color: var(--accent);
+    border-radius: 50%;
 }
 
 /* Contact / Links */
@@ -271,3 +278,26 @@ section {
         font-size: 2rem;
     }
 }
+
+/* Reveal Animation */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Stagger delays for list items */
+.list-layout .reveal:nth-child(2) { transition-delay: 0.1s; }
+.list-layout .reveal:nth-child(3) { transition-delay: 0.2s; }
+.list-layout .reveal:nth-child(4) { transition-delay: 0.3s; }
+
+.link-list .reveal:nth-child(2) { transition-delay: 0.1s; }
+.link-list .reveal:nth-child(3) { transition-delay: 0.2s; }
+.link-list .reveal:nth-child(4) { transition-delay: 0.3s; }
+.link-list .reveal:nth-child(5) { transition-delay: 0.4s; }
+.link-list .reveal:nth-child(6) { transition-delay: 0.5s; }
