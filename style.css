@@ -1,0 +1,273 @@
+:root {
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --accent: #ff4d00;
+    --grid-color: #333;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Manrope', sans-serif;
+    overflow-x: hidden;
+}
+
+/* Top Nav */
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 40px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1px solid var(--grid-color);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    background: rgba(18, 18, 18, 0.9);
+    backdrop-filter: blur(5px);
+    z-index: 100;
+}
+
+/* Hero */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-end;
+    padding: 40px;
+    position: relative;
+    border-bottom: 1px solid var(--grid-color);
+}
+
+h1.reveal-text {
+    font-size: 12vw;
+    line-height: 0.9;
+    font-weight: 400;
+    font-family: 'Italiana', serif;
+    letter-spacing: -0.02em;
+    z-index: 2;
+    mix-blend-mode: exclusion;
+    color: white; /* Difference blend mode against image */
+    pointer-events: none;
+    text-transform: none;
+}
+
+.hero-image-container {
+    position: absolute;
+    top: 15vh;
+    right: 10vw;
+    width: 30vw;
+    height: 60vh;
+    overflow: hidden;
+    z-index: 1;
+    border-radius: 12px;
+}
+
+.parallax-img {
+    width: 100%;
+    height: 120%; /* Taller for parallax */
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Grid Sections */
+section {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    border-bottom: 1px solid var(--grid-color);
+}
+
+.grid-item {
+    padding: 60px 40px;
+}
+
+.label {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    border-right: 1px solid var(--grid-color);
+    letter-spacing: 1px;
+    color: #bbb;
+}
+
+.big-text {
+    font-size: 3rem;
+    font-weight: 400;
+    margin-bottom: 30px;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+}
+
+.body-text {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    max-width: 600px;
+    margin-bottom: 20px;
+    color: var(--text-color);
+}
+
+.hover-link {
+    color: var(--text-color);
+    text-decoration: none;
+    border-bottom: 1px solid var(--text-color);
+    transition: color 0.3s;
+}
+
+.hover-link:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+/* List Layout */
+.list-layout {
+    display: flex;
+    gap: 40px;
+    font-size: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.list-layout span {
+    position: relative;
+    padding-left: 20px;
+}
+
+.list-layout span::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 0.8em;
+    top: 2px;
+}
+
+/* Contact / Links */
+.link-list {
+    padding: 60px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.magnetic-link {
+    font-size: 4rem;
+    text-decoration: none;
+    color: #ccc;
+    font-weight: 200;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    display: block;
+    width: fit-content;
+}
+
+.magnetic-link:hover {
+    color: var(--text-color);
+    padding-left: 20px;
+    font-weight: 400;
+}
+
+.magnetic-link.accent:hover {
+    color: var(--accent);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    /* Global Padding Reduction */
+    .top-nav {
+        padding: 20px;
+    }
+
+    .hero {
+        padding: 20px;
+        padding-top: 100px;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        text-align: center;
+        min-height: auto;
+        padding-bottom: 60px;
+    }
+
+    .grid-item, .link-list {
+        padding: 40px 20px;
+    }
+
+    .label {
+        border-right: none;
+        border-bottom: 1px solid var(--grid-color);
+        padding: 20px;
+    }
+
+    /* Hero Section Tweaks */
+    section {
+        grid-template-columns: 1fr;
+    }
+    
+    h1.reveal-text {
+        /* Calculated to fit "CASTELLANOS" (11 chars) on screen */
+        font-size: 11vw; 
+        line-height: 1.1;
+        margin-top: 0;
+        margin-bottom: 40px;
+        mix-blend-mode: normal;
+        color: var(--text-color);
+        width: 100%;
+        order: 1;
+        text-align: center;
+        letter-spacing: -0.02em; /* Tighten slightly */
+    }
+
+    .hero-image-container {
+        position: relative;
+        top: auto;
+        right: auto;
+        width: 90%; /* Some breathing room */
+        max-width: 400px;
+        height: auto;
+        aspect-ratio: 3 / 4; /* Portrait ratio for headshot */
+        order: 2;
+        margin: 0 auto;
+        opacity: 1;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+    }
+    
+    .parallax-img {
+        transform: none !important;
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+    }
+    
+    .big-text {
+        font-size: 2rem;
+    }
+
+    .body-text {
+        font-size: 1.1rem;
+    }
+    
+    /* Link List Tweaks */
+    .magnetic-link {
+        font-size: 2.5rem;
+    }
+
+    /* List Layout (Interests) */
+    .list-layout {
+        gap: 20px;
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    h1.reveal-text {
+        font-size: 12vw; /* Can be slightly bigger on very small screens due to reduced margins */
+    }
+
+    .magnetic-link {
+        font-size: 2rem;
+    }
+}
