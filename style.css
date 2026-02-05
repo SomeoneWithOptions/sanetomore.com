@@ -122,6 +122,10 @@ section {
     transition: color 0.3s;
 }
 
+.text-accent {
+    color: var(--accent);
+}
+
 .hover-link:hover {
     color: var(--accent);
     border-color: var(--accent);
