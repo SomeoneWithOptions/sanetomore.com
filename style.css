@@ -131,6 +131,18 @@ section {
     border-color: var(--accent);
 }
 
+/* Reveal Animation (Moved Up) */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
 /* List Layout */
 .list-layout {
     display: flex;
@@ -156,6 +168,11 @@ section {
     border-radius: 50%;
 }
 
+/* Stagger delays for list items */
+.list-layout .reveal:nth-child(2) { transition-delay: 0.1s; }
+.list-layout .reveal:nth-child(3) { transition-delay: 0.2s; }
+.list-layout .reveal:nth-child(4) { transition-delay: 0.3s; }
+
 /* Contact / Links */
 .link-list {
     padding: 60px 40px;
@@ -164,24 +181,28 @@ section {
     gap: 10px;
 }
 
+.link-list .reveal:nth-child(2) { transition-delay: 0.1s; }
+.link-list .reveal:nth-child(3) { transition-delay: 0.2s; }
+.link-list .reveal:nth-child(4) { transition-delay: 0.3s; }
+.link-list .reveal:nth-child(5) { transition-delay: 0.4s; }
+.link-list .reveal:nth-child(6) { transition-delay: 0.5s; }
+
 .magnetic-link {
     font-size: 4rem;
     text-decoration: none;
     color: #ccc;
     font-weight: 200;
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    /* Spring-like bounce effect for a tasty feel */
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
     display: block;
     width: fit-content;
 }
 
 .magnetic-link:hover {
-    color: var(--text-color);
-    padding-left: 20px;
-    font-weight: 400;
-}
-
-.magnetic-link.accent:hover {
     color: var(--accent);
+    /* Slide right + Scale up slightly */
+    transform: translateX(20px) scale(1.05);
+    transform-origin: left center; /* Ensure it grows from the left so it doesn't shift awkwardly */
 }
 
 /* Responsive */
@@ -282,26 +303,3 @@ section {
         font-size: 2rem;
     }
 }
-
-/* Reveal Animation */
-.reveal {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
-}
-
-.reveal.active {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Stagger delays for list items */
-.list-layout .reveal:nth-child(2) { transition-delay: 0.1s; }
-.list-layout .reveal:nth-child(3) { transition-delay: 0.2s; }
-.list-layout .reveal:nth-child(4) { transition-delay: 0.3s; }
-
-.link-list .reveal:nth-child(2) { transition-delay: 0.1s; }
-.link-list .reveal:nth-child(3) { transition-delay: 0.2s; }
-.link-list .reveal:nth-child(4) { transition-delay: 0.3s; }
-.link-list .reveal:nth-child(5) { transition-delay: 0.4s; }
-.link-list .reveal:nth-child(6) { transition-delay: 0.5s; }

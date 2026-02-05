@@ -56,21 +56,3 @@ const counterObserver = new IntersectionObserver((entries, observer) => {
 }, { threshold: 0.5 });
 
 counters.forEach(counter => counterObserver.observe(counter));
-
-// Magnetic Links Effect
-const magnets = document.querySelectorAll('.magnetic-link');
-magnets.forEach(magnet => {
-    magnet.addEventListener('mousemove', (e) => {
-        const rect = magnet.getBoundingClientRect();
-        const x = e.clientX - rect.left - rect.width / 2;
-        const y = e.clientY - rect.top - rect.height / 2;
-        
-        // Move the element slightly towards the mouse
-        magnet.style.transform = `translate(${x * 0.2}px, ${y * 0.3}px)`;
-    });
-
-    magnet.addEventListener('mouseleave', () => {
-        // Reset position
-        magnet.style.transform = 'translate(0, 0)';
-    });
-});
