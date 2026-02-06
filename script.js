@@ -1,12 +1,14 @@
 // Parallax Effect
-const img = document.querySelector('.parallax-img');
 const hero = document.querySelector('.hero');
+const img = document.querySelector('.parallax-img');
+const blob = document.querySelector('.hero-blob');
 
-if (img && hero) {
+if (hero) {
     window.addEventListener('scroll', () => {
         const scrollY = window.scrollY;
         if (scrollY < hero.offsetHeight) {
-            img.style.transform = `translateY(${scrollY * 0.2}px)`;
+            if (img) img.style.transform = `translateY(${scrollY * 0.2}px)`;
+            if (blob) blob.style.top = `calc(-5% + ${scrollY * 0.4}px)`;
         }
     });
 }
