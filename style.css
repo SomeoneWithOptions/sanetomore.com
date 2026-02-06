@@ -87,6 +87,7 @@ h1.reveal-text {
     overflow: hidden;
     z-index: 1;
     border-radius: 12px;
+    box-shadow: 12px 12px 0 rgba(255, 77, 0, 0.2);
 }
 
 .parallax-img {
@@ -290,7 +291,7 @@ section {
         margin-left: 5vw;
         opacity: 1;
         border-radius: 12px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+        box-shadow: 8px 8px 0 rgba(255, 77, 0, 0.2);
     }
     
     .parallax-img {
