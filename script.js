@@ -8,7 +8,7 @@ if (hero) {
         const scrollY = window.scrollY;
         if (scrollY < hero.offsetHeight) {
             if (img) img.style.transform = `translateY(${scrollY * 0.2}px)`;
-            if (blob) blob.style.top = `calc(-5% + ${scrollY * 0.4}px)`;
+            if (blob) blob.style.top = `calc(-10% + ${scrollY * 0.2}px)`;
         }
     });
 }
