@@ -69,6 +69,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (heroImage) heroImage.classList.add('active');
     }, 400);
 
+    // Animate Border (Wait for image to reveal)
+    const heroWrapper = document.querySelector('.hero-image-wrapper');
+    setTimeout(() => {
+        if (heroWrapper) heroWrapper.classList.add('active');
+    }, 1500);
+
     // Animate Text Lines Staggered
     if (heroLines.length > 0) {
         setTimeout(() => {
