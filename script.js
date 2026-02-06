@@ -1,7 +1,7 @@
 // Parallax Effect
 const hero = document.querySelector('.hero');
-const img = document.querySelector('.parallax-img');
-const blob = document.querySelector('.hero-blob');
+const img = document.querySelector('.hero__parallax-img');
+const blob = document.querySelector('.hero__blob');
 
 if (hero) {
     window.addEventListener('scroll', () => {
@@ -18,7 +18,7 @@ const revealElements = document.querySelectorAll('.reveal');
 const revealObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            entry.target.classList.add('active');
+            entry.target.classList.add('reveal--active');
             observer.unobserve(entry.target);
         }
     });
@@ -61,28 +61,28 @@ counters.forEach(counter => counterObserver.observe(counter));
 
 // Hero Animation on Page Load
 document.addEventListener('DOMContentLoaded', () => {
-    const heroImage = document.querySelector('.hero-image-container');
-    const heroLines = document.querySelectorAll('.line-text');
+    const heroImage = document.querySelector('.hero__image-container');
+    const heroLines = document.querySelectorAll('.hero__line-text');
     
     // Animate Image Curtain
     setTimeout(() => {
-        if (heroImage) heroImage.classList.add('active');
+        if (heroImage) heroImage.classList.add('hero__image-container--active');
     }, 400);
 
     // Animate Border (Wait for image to reveal)
-    const heroWrapper = document.querySelector('.hero-image-wrapper');
+    const heroWrapper = document.querySelector('.hero__image-wrapper');
     setTimeout(() => {
-        if (heroWrapper) heroWrapper.classList.add('active');
+        if (heroWrapper) heroWrapper.classList.add('hero__image-wrapper--active');
     }, 1500);
 
     // Animate Text Lines Staggered
     if (heroLines.length > 0) {
         setTimeout(() => {
-            heroLines[0].classList.add('active');
+            heroLines[0].classList.add('hero__line-text--active');
         }, 100);
         
         setTimeout(() => {
-            heroLines[1].classList.add('active');
+            heroLines[1].classList.add('hero__line-text--active');
         }, 250);
     }
 });
