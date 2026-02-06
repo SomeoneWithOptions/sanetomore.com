@@ -64,7 +64,7 @@ body {
     overflow: hidden; /* Ensure blob doesn't spill out */
 }
 
-h1.reveal-text {
+h1.hero-title {
     font-size: 12vw;
     line-height: 0.9;
     font-weight: 400;
@@ -72,9 +72,27 @@ h1.reveal-text {
     letter-spacing: -0.02em;
     z-index: 2;
     mix-blend-mode: exclusion;
-    color: white; /* Difference blend mode against image */
+    color: white;
     pointer-events: none;
     text-transform: none;
+    display: flex;
+    flex-direction: column;
+}
+
+.line-wrapper {
+    overflow: hidden;
+    padding-bottom: 0.5vw; /* tiny buffer for descenders */
+}
+
+.line-text {
+    display: block;
+    transform: translateY(110%);
+    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform;
+}
+
+.line-text.active {
+    transform: translateY(0);
 }
 
 .hero-image-container {
@@ -88,6 +106,16 @@ h1.reveal-text {
     z-index: 1;
     border-radius: 12px;
     box-shadow: 12px 12px 0 rgba(255, 77, 0, 0.2);
+    
+    /* Animation setup */
+    clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
+    transition: clip-path 1.5s cubic-bezier(0.77, 0, 0.175, 1), transform 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform: scale(1.1);
+}
+
+.hero-image-container.active {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    transform: scale(1);
 }
 
 .parallax-img {
@@ -264,7 +292,7 @@ section {
         left: -20%;
     }
 
-    h1.reveal-text {
+    h1.hero-title {
         /* Calculated to fit "CASTELLANOS" (11 chars) on screen */
         font-size: 11vw; 
         line-height: 1.1;
@@ -322,7 +350,7 @@ section {
 }
 
 @media (max-width: 480px) {
-    h1.reveal-text {
+    h1.hero-title {
         font-size: 12vw; /* Can be slightly bigger on very small screens due to reduced margins */
     }
 

@@ -58,3 +58,25 @@ const counterObserver = new IntersectionObserver((entries, observer) => {
 }, { threshold: 0.5 });
 
 counters.forEach(counter => counterObserver.observe(counter));
+
+// Hero Animation on Page Load
+document.addEventListener('DOMContentLoaded', () => {
+    const heroImage = document.querySelector('.hero-image-container');
+    const heroLines = document.querySelectorAll('.line-text');
+    
+    // Animate Image Curtain
+    setTimeout(() => {
+        if (heroImage) heroImage.classList.add('active');
+    }, 400);
+
+    // Animate Text Lines Staggered
+    if (heroLines.length > 0) {
+        setTimeout(() => {
+            heroLines[0].classList.add('active');
+        }, 100);
+        
+        setTimeout(() => {
+            heroLines[1].classList.add('active');
+        }, 250);
+    }
+});
