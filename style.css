@@ -1,0 +1,332 @@
+:root {
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --accent: #ff4d00;
+    --grid-color: #333;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Manrope', sans-serif;
+    overflow-x: hidden;
+}
+
+/* Top Nav */
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 40px;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 1px solid var(--grid-color);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    background: rgba(18, 18, 18, 0.9);
+    backdrop-filter: blur(5px);
+    z-index: 100;
+}
+
+/* Hero Blob — uniform contour */
+.hero-blob {
+    position: absolute;
+    top: -10%;
+    left: -10%;
+    width: 60vw;
+    height: 60vw;
+    background: transparent;
+    border: 15px solid rgba(255, 77, 0, 0.2);
+    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Hero */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-end;
+    padding: 40px;
+    position: relative;
+    border-bottom: 1px solid var(--grid-color);
+    overflow: hidden; /* Ensure blob doesn't spill out */
+}
+
+h1.reveal-text {
+    font-size: 12vw;
+    line-height: 0.9;
+    font-weight: 400;
+    font-family: 'Italiana', serif;
+    letter-spacing: -0.02em;
+    z-index: 2;
+    mix-blend-mode: exclusion;
+    color: white; /* Difference blend mode against image */
+    pointer-events: none;
+    text-transform: none;
+}
+
+.hero-image-container {
+    position: absolute;
+    top: 10vh;
+    right: 15vw;
+    width: auto;
+    height: 75vh;
+    aspect-ratio: 712 / 1108;
+    overflow: hidden;
+    z-index: 1;
+    border-radius: 12px;
+    box-shadow: 12px 12px 0 rgba(255, 77, 0, 0.2);
+}
+
+.parallax-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Grid Sections */
+section {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    border-bottom: 1px solid var(--grid-color);
+}
+
+.grid-item {
+    padding: 60px 40px;
+}
+
+.label {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    border-right: 1px solid var(--grid-color);
+    letter-spacing: 1px;
+    color: #bbb;
+}
+
+.big-text {
+    font-size: 3rem;
+    font-weight: 400;
+    margin-bottom: 30px;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+}
+
+.body-text {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    max-width: 600px;
+    margin-bottom: 20px;
+    color: var(--text-color);
+}
+
+.hover-link {
+    color: var(--text-color);
+    text-decoration: none;
+    border-bottom: 1px solid var(--text-color);
+    transition: color 0.3s;
+}
+
+.text-accent {
+    color: var(--accent);
+}
+
+.hover-link:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+}
+
+/* Reveal Animation (Moved Up) */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* List Layout */
+.list-layout {
+    display: flex;
+    gap: 40px;
+    font-size: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.list-layout span {
+    position: relative;
+    padding-left: 20px;
+}
+
+.list-layout span::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    background-color: var(--accent);
+    border-radius: 50%;
+}
+
+/* Stagger delays for list items */
+.list-layout .reveal:nth-child(2) { transition-delay: 0.1s; }
+.list-layout .reveal:nth-child(3) { transition-delay: 0.2s; }
+.list-layout .reveal:nth-child(4) { transition-delay: 0.3s; }
+
+/* Contact / Links */
+.link-list {
+    padding: 60px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.link-list .reveal:nth-child(2) { transition-delay: 0.1s; }
+.link-list .reveal:nth-child(3) { transition-delay: 0.2s; }
+.link-list .reveal:nth-child(4) { transition-delay: 0.3s; }
+.link-list .reveal:nth-child(5) { transition-delay: 0.4s; }
+.link-list .reveal:nth-child(6) { transition-delay: 0.5s; }
+
+.magnetic-link {
+    font-size: 4rem;
+    text-decoration: none;
+    color: #ccc;
+    font-weight: 200;
+    /* Spring-like bounce effect for a tasty feel */
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: block;
+    width: fit-content;
+}
+
+.link-list .magnetic-link:hover,
+.magnetic-link:hover {
+    transition-delay: 0s;
+    color: var(--accent);
+    /* Slide right + Scale up slightly */
+    transform: translateX(20px) scale(1.05);
+    transform-origin: left center; /* Ensure it grows from the left so it doesn't shift awkwardly */
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    /* Global Padding Reduction */
+    .top-nav {
+        padding: 20px;
+    }
+
+    .hero {
+        padding: 20px;
+        padding-top: 100px;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        text-align: center;
+        min-height: auto;
+        padding-bottom: 60px;
+    }
+
+    .grid-item, .link-list {
+        padding: 40px 20px;
+    }
+
+    .label {
+        border-right: none;
+        border-bottom: 1px solid var(--grid-color);
+        padding: 20px;
+    }
+
+    /* Hero Section Tweaks */
+    section {
+        grid-template-columns: 1fr;
+    }
+    
+    .hero-blob {
+        width: 90vw;
+        height: 90vw;
+        top: -10%;
+        left: -20%;
+    }
+
+    h1.reveal-text {
+        /* Calculated to fit "CASTELLANOS" (11 chars) on screen */
+        font-size: 11vw; 
+        line-height: 1.1;
+        margin-top: 0;
+        margin-bottom: 20px;
+        mix-blend-mode: normal;
+        color: var(--text-color);
+        width: 100%;
+        order: 1;
+        text-align: center;
+        letter-spacing: -0.02em; /* Tighten slightly */
+    }
+
+    .hero-image-container {
+        position: relative;
+        top: auto;
+        right: auto;
+        width: 85%;
+        max-width: 400px;
+        height: auto;
+        aspect-ratio: 712 / 1108;
+        order: 2;
+        margin: 0;
+        margin-left: 5vw;
+        opacity: 1;
+        border-radius: 12px;
+        box-shadow: 8px 8px 0 rgba(255, 77, 0, 0.2);
+    }
+    
+    .parallax-img {
+        transform: none !important;
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+    }
+    
+    .big-text {
+        font-size: 2rem;
+    }
+
+    .body-text {
+        font-size: 1.1rem;
+    }
+    
+    /* Link List Tweaks */
+    .magnetic-link {
+        font-size: 2.5rem;
+    }
+
+    /* List Layout (Interests) */
+    .list-layout {
+        gap: 20px;
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    h1.reveal-text {
+        font-size: 12vw; /* Can be slightly bigger on very small screens due to reduced margins */
+    }
+
+    .magnetic-link {
+        font-size: 2rem;
+    }
+}

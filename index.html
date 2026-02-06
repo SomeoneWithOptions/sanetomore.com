@@ -1,76 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Andres Castellanos</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Azeret+Mono:ital,wght@0,100..900;1,100..900&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="./styles/main.css" />
-
-    <script src="./scripts/script.js" defer></script>
-    <title>Andres Castellanos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Manrope:wght@200;400;500;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-    <div class="page-1">
-        <div class="page-1__container">
-            <header class="page-1__header">
-                <span class="page-1__header__menu">Contact</span>
-            </header>
-            <div class="contact-menu">
-                <ul class="contact-menu__list">
-                    <li class="contact-menu__list-item">
-                        <a class="contact-menu__link" href="https://diafestivo.co/" target="_blank"
-                            aria-label="Link To diafestivo.co">Diafestivo</a>
-                    </li>
-                    <li class="contact-menu__list-item">
-                        <a class="contact-menu__link" href="https://www.linkedin.com/in/sanetomore"
-                            target="_blank" aria-label="Link to Andres LinkedIn">Linkedin</a>
-                    </li>
-                    <li class="contact-menu__list-item">
-                        <a class="contact-menu__link" href="https://www.instagram.com/sanetomore"
-                            target="_blank" aria-label="Link to Andres Instagram">Instagram</a>
-                    </li>
-                    <li class="contact-menu__list-item">
-                        <a class="contact-menu__link" href="https://github.com/SomeoneWithOptions"
-                            target="_blank" aria-label="Link to Andres Github">GitHub</a>
-                    </li>
-                    <li class="contact-menu__list-item">
-                        <a class="contact-menu__link" href="mailto:acastesol@gmail.com" target="_blank"
-                            aria-label="Link to Andres Email">Email</a>
-                    </li>
-                    <li class="contact-menu__list-item">
-                        <a class="contact-menu__link" href="https://cal.com/sanetomore" target="_blank"
-                            aria-label="Link To Andres Calendar">Lets Talk!</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="profile-card-container">
-                <div class="profile-card">
-                    <div class="profile-card__image-container">
-                        <img class="profile-card__image" src="./assets/profile.jpg" alt="Andres Castellanos">
-                    </div>
-                    <div class="profile-card__content">
-                        <h1 class="profile-card__title">Andres Castellanos</h1>
-                        <div class="profile-card__description">
-                            <p>Hey! I'm a SysOps Admin with 10 years of SaaS experience, automating processes in the IT industry.</p>
-                            <p>I make tools talk to each other so teams can move faster.</p>
-                            <p>I love drumming, running, dancing salsa, and video games.</p>
-                            <p>Currently working at <a href="https://recurly.com/" class="recurly-link">Recurly</a></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</body>
+    <nav class="top-nav">
+        <span class="text-accent">(073)</span>
+        <span>SYSOPS ADMIN</span>
+        <span></span>
+    </nav>
 
+    <main>
+        <header class="hero">
+            <div class="hero-blob"></div>
+            <h1 class="reveal-text">ANDRES<br>CASTELLANOS</h1>
+            <div class="hero-image-container">
+                <img src="assets/profile.jpg" alt="Andres Castellanos" class="parallax-img">
+            </div>
+        </header>
+
+        <section class="intro-grid">
+            <div class="grid-item label">(ABOUT)</div>
+            <div class="grid-item content">
+                <p class="big-text reveal">I make tools talk to each other<span class="accent-dot">.</span></p>
+                <p class="body-text reveal">SysOps Admin with <span class="counter" data-target="12">0</span> years of IT & Cloud infrastructure experience. Specializing in automation, turning manual chaos into streamlined workflows so teams can move faster.</p>
+                <p class="body-text reveal">Currently @ <a href="https://recurly.com/" target="_blank" class="hover-link permanent-accent">Recurly</a></p>
+            </div>
+        </section>
+
+        <section class="interests-grid">
+            <div class="grid-item label">(INTERESTS)</div>
+            <div class="grid-item content list-layout">
+                <span class="reveal">Drumming</span>
+                <span class="reveal">Running</span>
+                <span class="reveal">Salsa</span>
+                <span class="reveal">Video Games</span>
+            </div>
+        </section>
+
+        <section class="contact-section">
+            <div class="grid-item label">(CONTACT)</div>
+            <div class="link-list">
+                <a href="https://diafestivo.co/" target="_blank" class="magnetic-link reveal">Diafestivo</a>
+                <a href="https://www.linkedin.com/in/sanetomore" target="_blank" class="magnetic-link accent reveal">LinkedIn</a>
+                <a href="https://www.instagram.com/sanetomore" target="_blank" class="magnetic-link reveal">Instagram</a>
+                <a href="https://github.com/SomeoneWithOptions" target="_blank" class="magnetic-link accent reveal">GitHub</a>
+                <a href="mailto:acastesol@gmail.com" class="magnetic-link reveal">Email</a>
+                <a href="https://cal.com/sanetomore" target="_blank" class="magnetic-link accent reveal">Let's Talk</a>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
 </html>
