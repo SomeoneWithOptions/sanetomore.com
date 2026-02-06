@@ -47,7 +47,7 @@ body {
     width: 60vw;
     height: 60vw;
     background: transparent;
-    border: 15px solid rgba(255, 77, 0, 0.2);
+    border: 2px solid rgba(255, 77, 0, 0.2);
     border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
     z-index: 0;
     pointer-events: none;
@@ -109,7 +109,7 @@ h1.hero-title {
 }
 
 .hero-image-wrapper.active {
-    box-shadow: 12px 12px 0 rgba(255, 77, 0, 0.2);
+    box-shadow: 6px 6px 0 rgba(255, 77, 0, 0.2);
 }
 
 .hero-image-container {
@@ -336,7 +336,7 @@ section {
     }
     
     .hero-image-wrapper.active {
-        box-shadow: 8px 8px 0 rgba(255, 77, 0, 0.2);
+        box-shadow: 4px 4px 0 rgba(255, 77, 0, 0.2);
     }
 
     .hero-image-container {
