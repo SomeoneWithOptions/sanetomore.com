@@ -182,6 +182,10 @@ section {
     color: var(--accent);
 }
 
+.accent-dot {
+    color: var(--accent);
+}
+
 .hover-link:hover {
     color: var(--accent);
     border-color: var(--accent);
