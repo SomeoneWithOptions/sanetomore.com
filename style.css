@@ -254,7 +254,6 @@ section {
     width: fit-content;
 }
 
-.link-list .magnetic-link:hover,
 .magnetic-link:hover {
     transition-delay: 0s;
     color: var(--accent);
