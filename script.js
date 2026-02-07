@@ -19,6 +19,12 @@ const revealObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.classList.add('reveal--active');
+            
+            // Add complete class after transition to reset delays for hover interactions
+            entry.target.addEventListener('transitionend', () => {
+                entry.target.classList.add('reveal--complete');
+            }, { once: true });
+
             observer.unobserve(entry.target);
         }
     });

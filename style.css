@@ -243,6 +243,18 @@ body {
 .contact__list .reveal:nth-child(5) { transition-delay: 0.4s; }
 .contact__list .reveal:nth-child(6) { transition-delay: 0.5s; }
 
+/* Override stagger delays for uniform return animation after reveal */
+.contact__list .reveal.reveal--complete {
+    transition-delay: 0.5s;
+}
+
+/* Ensure instant hover-in for contact links */
+.contact__list .magnetic-link:hover {
+    transition-delay: 0s;
+    color: var(--accent);
+    transform: translateX(20px) scale(1.05);
+    transform-origin: left center;
+}
 .magnetic-link {
     font-size: 4rem;
     text-decoration: none;
