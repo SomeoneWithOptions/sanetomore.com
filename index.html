@@ -131,6 +131,30 @@
             overflow: hidden;
             z-index: 1;
             contain: layout paint;
+            transform: translate3d(0, 16px, 0) scale(0.985);
+            box-shadow: 0 0 0 rgba(255, 77, 0, 0);
+            transition: transform 0.52s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.6s ease;
+        }
+
+        .hero__image-wrapper::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(115deg, rgba(255, 77, 0, 0.1) 0%, rgba(255, 77, 0, 0) 34%, rgba(255, 255, 255, 0.08) 52%, rgba(255, 255, 255, 0) 68%);
+            opacity: 0.55;
+            transform: translate3d(-18%, 0, 0);
+            transition: transform 0.72s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.48s ease;
+            pointer-events: none;
+        }
+
+        .hero__image-wrapper--active {
+            transform: translate3d(0, 0, 0) scale(1);
+            box-shadow: 6px 6px 0 rgba(255, 77, 0, 0.2);
+        }
+
+        .hero__image-wrapper--active::after {
+            opacity: 0;
+            transform: translate3d(14%, 0, 0);
         }
 
         .hero__picture,
@@ -190,7 +214,17 @@
                 height: auto;
                 order: 2;
                 margin-left: 5vw;
+                transform: translate3d(0, 8px, 0) scale(0.992);
+                transition-duration: 0.26s, 0.32s;
+            }
+
+            .hero__image-wrapper--active {
                 box-shadow: 4px 4px 0 rgba(255, 77, 0, 0.18);
+            }
+
+            .hero__image-wrapper::after {
+                opacity: 0.32;
+                transition-duration: 0.3s, 0.22s;
             }
         }
     </style>

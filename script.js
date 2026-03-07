@@ -97,12 +97,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (heroWrapper) {
-        if (prefersReducedMotion || prefersStaticHero) {
+        if (prefersReducedMotion) {
             heroWrapper.classList.add('hero__image-wrapper--active');
         } else {
-            window.setTimeout(() => {
-                heroWrapper.classList.add('hero__image-wrapper--active');
-            }, 180);
+            window.requestAnimationFrame(() => {
+                window.requestAnimationFrame(() => {
+                    heroWrapper.classList.add('hero__image-wrapper--active');
+                });
+            });
         }
     }
 
