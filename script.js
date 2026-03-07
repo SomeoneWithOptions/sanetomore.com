@@ -1,94 +1,129 @@
-// Parallax Effect
-const hero = document.querySelector('.hero');
-const img = document.querySelector('.hero__parallax-img');
-const blob = document.querySelector('.hero__blob');
-
-if (hero) {
-    window.addEventListener('scroll', () => {
-        const scrollY = window.scrollY;
-        if (scrollY < hero.offsetHeight) {
-            if (img) img.style.transform = `translateY(${scrollY * 0.2}px)`;
-            if (blob) blob.style.top = `calc(-10% + ${scrollY * 0.2}px)`;
-        }
-    });
-}
-
-// Reveal on Scroll
-const revealElements = document.querySelectorAll('.reveal');
-const revealObserver = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('reveal--active');
-            
-            // Add complete class after transition to reset delays for hover interactions
-            entry.target.addEventListener('transitionend', () => {
-                entry.target.classList.add('reveal--complete');
-            }, { once: true });
-
-            observer.unobserve(entry.target);
-        }
-    });
-}, { threshold: 0.1 });
-
-revealElements.forEach(el => revealObserver.observe(el));
-
-// Experience Counter Animation
-const counters = document.querySelectorAll('.counter');
-const counterObserver = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            const counter = entry.target;
-            const target = +counter.getAttribute('data-target');
-            const duration = 2000; // 2 seconds
-            const startTime = performance.now();
-            
-            const updateCounter = (currentTime) => {
-                const elapsed = currentTime - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-                
-                // Constant speed (Linear)
-                const currentVal = Math.floor(progress * target);
-                counter.innerText = currentVal;
-                
-                if (progress < 1) {
-                    requestAnimationFrame(updateCounter);
-                } else {
-                    counter.innerText = target;
-                }
-            };
-            
-            requestAnimationFrame(updateCounter);
-            observer.unobserve(counter);
-        }
-    });
-}, { threshold: 0.5 });
-
-counters.forEach(counter => counterObserver.observe(counter));
-
-// Hero Animation on Page Load
 document.addEventListener('DOMContentLoaded', () => {
-    const heroImage = document.querySelector('.hero__image-container');
+    const hero = document.querySelector('.hero');
+    const heroImage = document.querySelector('.hero__parallax-img');
+    const heroBlob = document.querySelector('.hero__blob');
     const heroLines = document.querySelectorAll('.hero__line-text');
-    
-    // Animate Image Curtain
-    setTimeout(() => {
-        if (heroImage) heroImage.classList.add('hero__image-container--active');
-    }, 400);
-
-    // Animate Border (Wait for image to reveal)
     const heroWrapper = document.querySelector('.hero__image-wrapper');
-    setTimeout(() => {
-        if (heroWrapper) heroWrapper.classList.add('hero__image-wrapper--active');
-    }, 1500);
+    const revealElements = document.querySelectorAll('.reveal');
+    const counters = document.querySelectorAll('.counter');
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const prefersStaticHero = window.matchMedia('(max-width: 768px)').matches || window.matchMedia('(pointer: coarse)').matches;
 
-    // Animate Text Lines Staggered
+    const activateReveal = (element) => {
+        element.classList.add('reveal--active');
+        element.addEventListener('transitionend', () => {
+            element.classList.add('reveal--complete');
+        }, { once: true });
+    };
+
+    const animateCounter = (counter) => {
+        const target = Number(counter.getAttribute('data-target'));
+
+        if (prefersReducedMotion) {
+            counter.innerText = String(target);
+            return;
+        }
+
+        const duration = 2000;
+        const startTime = performance.now();
+
+        const updateCounter = (currentTime) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const currentVal = Math.floor(progress * target);
+
+            counter.innerText = String(currentVal);
+
+            if (progress < 1) {
+                requestAnimationFrame(updateCounter);
+            } else {
+                counter.innerText = String(target);
+            }
+        };
+
+        requestAnimationFrame(updateCounter);
+    };
+
+    if (prefersReducedMotion) {
+        revealElements.forEach((element) => {
+            element.classList.add('reveal--active', 'reveal--complete');
+        });
+    } else if ('IntersectionObserver' in window) {
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    activateReveal(entry.target);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        revealElements.forEach((element) => revealObserver.observe(element));
+    } else {
+        revealElements.forEach((element) => {
+            element.classList.add('reveal--active', 'reveal--complete');
+        });
+    }
+
+    if ('IntersectionObserver' in window) {
+        const counterObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    animateCounter(entry.target);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        counters.forEach((counter) => counterObserver.observe(counter));
+    } else {
+        counters.forEach((counter) => animateCounter(counter));
+    }
+
     if (heroLines.length > 0) {
-        setTimeout(() => {
-            heroLines[0].classList.add('hero__line-text--active');
-        }, 100);
-        
-        setTimeout(() => {
-            heroLines[1].classList.add('hero__line-text--active');
-        }, 250);
+        if (prefersReducedMotion || prefersStaticHero) {
+            heroLines.forEach((line) => line.classList.add('hero__line-text--active'));
+        } else {
+            window.setTimeout(() => {
+                heroLines[0].classList.add('hero__line-text--active');
+            }, 60);
+
+            window.setTimeout(() => {
+                if (heroLines[1]) {
+                    heroLines[1].classList.add('hero__line-text--active');
+                }
+            }, 160);
+        }
+    }
+
+    if (heroWrapper) {
+        if (prefersReducedMotion || prefersStaticHero) {
+            heroWrapper.classList.add('hero__image-wrapper--active');
+        } else {
+            window.setTimeout(() => {
+                heroWrapper.classList.add('hero__image-wrapper--active');
+            }, 180);
+        }
+    }
+
+    if (hero && heroImage && heroBlob && !prefersReducedMotion && !prefersStaticHero) {
+        let ticking = false;
+
+        const updateParallax = () => {
+            const scrollY = Math.min(window.scrollY, hero.offsetHeight);
+            const imageOffset = scrollY * 0.14;
+            const blobOffset = scrollY * 0.08;
+
+            heroImage.style.transform = `translate3d(0, ${imageOffset}px, 0)`;
+            heroBlob.style.transform = `translate3d(0, ${blobOffset}px, 0)`;
+            ticking = false;
+        };
+
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                window.requestAnimationFrame(updateParallax);
+                ticking = true;
+            }
+        }, { passive: true });
     }
 });
