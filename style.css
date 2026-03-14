@@ -322,26 +322,39 @@ body {
     transition-delay: 0.5s;
 }
 
-/* Override stagger delays for uniform return animation after reveal */
-.contact__list .reveal.reveal--complete {
-    transition-delay: 0.5s;
-}
-
 .magnetic-link {
     font-size: 4rem;
     text-decoration: none;
     color: #ccc;
     font-weight: 200;
-    transition: color 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
     display: block;
     width: fit-content;
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-font-smoothing: antialiased;
+    transform: translate3d(0, 0, 0) scale(1);
+    transform-origin: left center;
+    /* Transition for initial entrance or when not complete */
+    transition: color 0.5s cubic-bezier(0.22, 1, 0.36, 1), transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.magnetic-link:hover {
+/* Smooth hover interaction once entrance is done */
+/* Higher specificity used to correctly override stagger delays (.contact__list .reveal:nth-child) */
+.contact__list .magnetic-link.reveal--complete {
+    /* Set stable transition parameters on the base state */
+    transition-property: color, transform;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    /* Hover-Out values: Wait 1.5s, then return smoothly over 0.6s */
+    transition-duration: 0.6s;
+    transition-delay: 0.2s;
+}
+
+.contact__list .magnetic-link.reveal--complete:hover {
+    /* Hover-In values: snappy, no delay */
+    transition-duration: 0.2s;
     transition-delay: 0s;
     color: var(--accent);
-    transform: translate3d(20px, 0, 0) scale(1.05);
-    transform-origin: left center;
+    transform: translate3d(15px, 0, 0) scale(1.02);
 }
 
 /* Responsive */
