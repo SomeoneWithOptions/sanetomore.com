@@ -194,8 +194,6 @@ body {
     display: grid;
     grid-template-columns: 1fr 3fr;
     border-bottom: 1px solid var(--grid-color);
-    content-visibility: auto;
-    contain-intrinsic-size: 1px 600px;
 }
 
 .grid-section__item {
@@ -298,7 +296,6 @@ body {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    padding: 60px 40px;
 }
 
 /* Stagger delays for contact links */
@@ -329,29 +326,24 @@ body {
     font-weight: 200;
     display: block;
     width: fit-content;
-    will-change: transform;
+    will-change: transform, opacity;
     backface-visibility: hidden;
     -webkit-font-smoothing: antialiased;
-    transform: translate3d(0, 0, 0) scale(1);
     transform-origin: left center;
-    /* Transition for initial entrance or when not complete */
-    transition: color 0.5s cubic-bezier(0.22, 1, 0.36, 1), transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    /* Entrance animation transition - matches .reveal */
+    transition: opacity 0.8s cubic-bezier(0.5, 0, 0, 1), transform 0.8s cubic-bezier(0.5, 0, 0, 1);
 }
 
 /* Smooth hover interaction once entrance is done */
-/* Higher specificity used to correctly override stagger delays (.contact__list .reveal:nth-child) */
 .contact__list .magnetic-link.reveal--complete {
-    /* Set stable transition parameters on the base state */
-    transition-property: color, transform;
-    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-    /* Hover-Out values: Wait 1.5s, then return smoothly over 0.6s */
-    transition-duration: 0.6s;
-    transition-delay: 0.2s;
+    /* Hover-Out values: slight delay before returning */
+    transition: color 0.6s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: 0.1s;
 }
 
 .contact__list .magnetic-link.reveal--complete:hover {
     /* Hover-In values: snappy, no delay */
-    transition-duration: 0.2s;
+    transition: color 0.2s cubic-bezier(0.22, 1, 0.36, 1), transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
     transition-delay: 0s;
     color: var(--accent);
     transform: translate3d(15px, 0, 0) scale(1.02);
@@ -375,10 +367,6 @@ body {
     }
 
     .grid-section__item {
-        padding: 40px 20px;
-    }
-
-    .contact__list {
         padding: 40px 20px;
     }
 
