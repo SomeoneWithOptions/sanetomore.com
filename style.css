@@ -29,6 +29,8 @@
     --bg-color: #121212;
     --text-color: #e0e0e0;
     --accent: #ff4d00;
+    --vineskills-green: #65d46e;
+    --vineskills-green-hover: #8bef91;
     --grid-color: #333;
 }
 
@@ -235,6 +237,16 @@ body {
 .link-hover:hover {
     color: var(--accent);
     border-color: var(--accent);
+}
+
+.link-hover--vineskills {
+    color: var(--vineskills-green);
+    border-color: color-mix(in srgb, var(--vineskills-green) 78%, transparent);
+}
+
+.link-hover--vineskills:hover {
+    color: var(--vineskills-green-hover);
+    border-color: var(--vineskills-green-hover);
 }
 
 .u-text-accent {
