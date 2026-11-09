@@ -6,11 +6,72 @@ document.addEventListener('DOMContentLoaded', () => {
     const heroWrapper = document.querySelector('.hero__image-wrapper');
     const revealElements = document.querySelectorAll('.reveal');
     const counters = document.querySelectorAll('.counter');
+    const spriteItems = document.querySelectorAll('.interests__item[data-sprite]');
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const prefersStaticHero = window.matchMedia('(max-width: 768px)').matches || window.matchMedia('(pointer: coarse)').matches;
 
+    /* 8x8 pixel sprites, two frames each. '#' = filled pixel. */
+    const SPRITES = {
+        drums: [
+            ['#......#', '.#....#.', '..#..#..', '........', '.######.', '#......#', '#.#..#.#', '.######.'],
+            ['........', '........', '#......#', '.##..##.', '.######.', '#......#', '#.#..#.#', '.######.']
+        ],
+        run: [
+            ['.....##.', '.....##.', '...###..', '..#.##.#', '....#...', '...#.#..', '..#...#.', '.#.....#'],
+            ['.....##.', '.....##.', '....##..', '...###..', '....#...', '....##..', '....#.#.', '...##...']
+        ],
+        salsa: [
+            ['#..##..#', '.#.##.#.', '..####..', '...##...', '...##...', '..#..#..', '.#....#.', '.#....##'],
+            ['...##...', '...##...', '.######.', '#..##..#', '...##...', '..#..#..', '..#...#.', '.##....#']
+        ],
+        gamepad: [
+            ['........', '.######.', '##.###.#', '#...#.##', '##.#####', '########', '###..###', '##....##'],
+            ['........', '.######.', '##.#####', '#...#..#', '##.#####', '########', '###..###', '##....##']
+        ]
+    };
+
+    const gridToRects = (rows) => rows.map((row, y) => {
+        let rects = '';
+        let x = 0;
+
+        while (x < row.length) {
+            if (row[x] === '#') {
+                let run = 1;
+
+                while (row[x + run] === '#') {
+                    run += 1;
+                }
+
+                rects += `<rect x="${x}" y="${y}" width="${run}" height="1"/>`;
+                x += run;
+            } else {
+                x += 1;
+            }
+        }
+
+        return rects;
+    }).join('');
+
+    spriteItems.forEach((item, index) => {
+        const frames = SPRITES[item.dataset.sprite];
+
+        if (!frames) {
+            return;
+        }
+
+        item.insertAdjacentHTML('afterbegin', `<svg class="interests__sprite" viewBox="0 0 8 8" fill="currentColor" aria-hidden="true" focusable="false" style="--sprite-delay: ${0.3 + index * 0.1}s"><g class="interests__sprite-frame--a">${gridToRects(frames[0])}</g><g class="interests__sprite-frame--b">${gridToRects(frames[1])}</g></svg>`);
+        item.classList.add('interests__item--sprite');
+    });
+
     const activateReveal = (element) => {
         element.classList.add('reveal--active');
+
+        const sprite = element.querySelector('.interests__sprite');
+
+        if (sprite) {
+            sprite.classList.add('interests__sprite--play');
+        }
+
         element.addEventListener('transitionend', () => {
             element.classList.add('reveal--complete');
         }, { once: true });
