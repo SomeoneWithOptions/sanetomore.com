@@ -32,6 +32,7 @@
     --vineskills-green: #65d46e;
     --vineskills-green-hover: #8bef91;
     --grid-color: #333;
+    --pixel: 3px;
 }
 
 html {
@@ -147,31 +148,43 @@ body {
     border-radius: 12px;
     overflow: hidden;
     contain: layout paint;
-    transform: translate3d(0, 16px, 0) scale(0.985);
     box-shadow: 0 0 0 rgba(255, 77, 0, 0);
-    transition: transform 0.52s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.6s ease;
-    will-change: transform;
-}
-
-.hero__image-wrapper::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(115deg, rgba(255, 77, 0, 0.1) 0%, rgba(255, 77, 0, 0) 34%, rgba(255, 255, 255, 0.08) 52%, rgba(255, 255, 255, 0) 68%);
-    opacity: 0.55;
-    transform: translate3d(-18%, 0, 0);
-    transition: transform 0.72s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.48s ease;
-    pointer-events: none;
+    transition: box-shadow 0.12s steps(2, end);
 }
 
 .hero__image-wrapper--active {
-    transform: translate3d(0, 0, 0) scale(1);
     box-shadow: 6px 6px 0 rgba(255, 77, 0, 0.2);
 }
 
-.hero__image-wrapper--active::after {
-    opacity: 0;
-    transform: translate3d(14%, 0, 0);
+/* Photo intro: orange pixel sweep drawn by script.js over the visible image (keeps LCP intact) */
+.hero__intro {
+    display: none;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.js .hero__intro {
+    display: block;
+    background-color: var(--bg-color);
+    animation: hero-intro-failsafe 0s linear 1.5s forwards;
+}
+
+.js .hero__intro--running {
+    background-color: transparent;
+    animation: none;
+}
+
+.js .hero__intro--done {
+    display: none;
+}
+
+@keyframes hero-intro-failsafe {
+    to {
+        visibility: hidden;
+    }
 }
 
 .hero__picture,
@@ -253,6 +266,32 @@ body {
     color: var(--accent);
 }
 
+.u-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+}
+
+/* Block cursor: full terminal cell, measured from Manrope (ascender 0.735em, descender 0.25em) */
+.about__cursor {
+    display: inline-block;
+    width: 0.46em;
+    height: 0.985em;
+    margin-left: 0.1em;
+    vertical-align: -0.25em;
+    background-color: var(--accent);
+    animation: cursor-blink 1.1s steps(1, end) infinite;
+}
+
+@keyframes cursor-blink {
+    50% {
+        opacity: 0;
+    }
+}
+
 /* Reveal Animation */
 .reveal {
     opacity: 0;
@@ -288,6 +327,74 @@ body {
     height: 6px;
     background-color: var(--accent);
     border-radius: 50%;
+}
+
+/* Pixel sprites (injected by script.js, dot stays as fallback) */
+.interests__item--sprite {
+    padding-left: 36px;
+}
+
+.interests__item--sprite::before {
+    display: none;
+}
+
+.interests__sprite {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: calc(var(--pixel) * 8);
+    height: calc(var(--pixel) * 8);
+    margin-top: calc(var(--pixel) * -4);
+    color: var(--accent);
+    shape-rendering: crispEdges;
+}
+
+.interests__sprite-frame--b {
+    opacity: 0;
+}
+
+.interests__sprite--play .interests__sprite-frame--a {
+    animation: sprite-frame-a 0.36s steps(1, end) 3 var(--sprite-delay, 0s);
+}
+
+.interests__sprite--play .interests__sprite-frame--b {
+    animation: sprite-frame-b 0.36s steps(1, end) 3 var(--sprite-delay, 0s);
+}
+
+.interests__item:hover .interests__sprite-frame--a {
+    animation: sprite-frame-a 0.36s steps(1, end) infinite;
+}
+
+.interests__item:hover .interests__sprite-frame--b {
+    animation: sprite-frame-b 0.36s steps(1, end) infinite;
+}
+
+@keyframes sprite-frame-a {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes sprite-frame-b {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 
 /* Stagger delays for interests */
@@ -428,17 +535,10 @@ body {
         margin: 0;
         margin-left: 5vw;
         border-radius: 12px;
-        transform: translate3d(0, 8px, 0) scale(0.992);
-        transition-duration: 0.26s, 0.32s;
     }
 
     .hero__image-wrapper--active {
         box-shadow: 4px 4px 0 rgba(255, 77, 0, 0.18);
-    }
-
-    .hero__image-wrapper::after {
-        opacity: 0.32;
-        transition-duration: 0.3s, 0.22s;
     }
 
     .hero__parallax-img {
@@ -495,14 +595,21 @@ body {
         opacity: 1;
     }
 
+    .about__cursor,
+    .interests__sprite--play .interests__sprite-frame--a,
+    .interests__sprite--play .interests__sprite-frame--b,
+    .interests__item:hover .interests__sprite-frame--a,
+    .interests__item:hover .interests__sprite-frame--b {
+        animation: none;
+    }
+
     .hero__image-wrapper {
         opacity: 1;
         box-shadow: 4px 4px 0 rgba(255, 77, 0, 0.18);
     }
 
-    .hero__image-wrapper::after {
-        opacity: 0;
-        transition: none;
+    .js .hero__intro {
+        display: none;
     }
 
     .hero__image-wrapper--active {
