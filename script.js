@@ -1,15 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
     const hero = document.querySelector('.hero');
-    const heroImage = document.querySelector('.hero__parallax-img');
-    const heroBlob = document.querySelector('.hero__blob');
-    const heroLines = document.querySelectorAll('.hero__line-text');
+    const heroSteps = document.querySelectorAll('.hero__step');
+    const heroImage = document.querySelector('.hero__image');
     const heroWrapper = document.querySelector('.hero__image-wrapper');
     const heroIntro = document.querySelector('.hero__intro');
     const revealElements = document.querySelectorAll('.reveal');
-    const counters = document.querySelectorAll('.counter');
     const spriteItems = document.querySelectorAll('.interests__item[data-sprite]');
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const prefersStaticHero = window.matchMedia('(max-width: 768px)').matches || window.matchMedia('(pointer: coarse)').matches;
 
     /* 8x8 pixel sprites, two frames each. '#' = filled pixel. */
     const SPRITES = {
@@ -78,34 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { once: true });
     };
 
-    const animateCounter = (counter) => {
-        const target = Number(counter.getAttribute('data-target'));
-
-        if (prefersReducedMotion) {
-            counter.innerText = String(target);
-            return;
-        }
-
-        const duration = 2000;
-        const startTime = performance.now();
-
-        const updateCounter = (currentTime) => {
-            const elapsed = currentTime - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            const currentVal = Math.floor(progress * target);
-
-            counter.innerText = String(currentVal);
-
-            if (progress < 1) {
-                requestAnimationFrame(updateCounter);
-            } else {
-                counter.innerText = String(target);
-            }
-        };
-
-        requestAnimationFrame(updateCounter);
-    };
-
     if (prefersReducedMotion) {
         revealElements.forEach((element) => {
             element.classList.add('reveal--active', 'reveal--complete');
@@ -127,34 +96,49 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    if ('IntersectionObserver' in window) {
-        const counterObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    animateCounter(entry.target);
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.5 });
+    /* Hero shell session: type each command, then show its output. */
+    const wait = (ms) => new Promise((resolve) => {
+        window.setTimeout(resolve, ms);
+    });
 
-        counters.forEach((counter) => counterObserver.observe(counter));
-    } else {
-        counters.forEach((counter) => animateCounter(counter));
-    }
+    const typeCommand = async (line) => {
+        const command = line.querySelector('.hero__cmd');
 
-    if (heroLines.length > 0) {
-        if (prefersReducedMotion || prefersStaticHero) {
-            heroLines.forEach((line) => line.classList.add('hero__line-text--active'));
+        if (!command) {
+            line.classList.add('hero__step--shown');
+            return;
+        }
+
+        const text = command.textContent;
+
+        command.textContent = '';
+        line.classList.add('hero__step--shown');
+        await wait(280);
+
+        for (const char of text) {
+            command.textContent += char;
+            await wait(55 + Math.random() * 55);
+        }
+
+        await wait(200);
+    };
+
+    const runHeroSession = async () => {
+        for (const step of heroSteps) {
+            if (step.hasAttribute('data-type')) {
+                await typeCommand(step);
+            } else {
+                step.classList.add('hero__step--shown');
+                await wait(step.classList.contains('hero__name') ? 750 : 120);
+            }
+        }
+    };
+
+    if (hero && heroSteps.length > 0) {
+        if (prefersReducedMotion) {
+            hero.classList.remove('hero--typing');
         } else {
-            window.setTimeout(() => {
-                heroLines[0].classList.add('hero__line-text--active');
-            }, 60);
-
-            window.setTimeout(() => {
-                if (heroLines[1]) {
-                    heroLines[1].classList.add('hero__line-text--active');
-                }
-            }, 160);
+            runHeroSession();
         }
     }
 
@@ -259,26 +243,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
             decoded.then(startHeroSweep, finishHeroIntro);
         }
-    }
-
-    if (hero && heroImage && heroBlob && !prefersReducedMotion && !prefersStaticHero) {
-        let ticking = false;
-
-        const updateParallax = () => {
-            const scrollY = Math.min(window.scrollY, hero.offsetHeight);
-            const imageOffset = scrollY * 0.14;
-            const blobOffset = scrollY * 0.08;
-
-            heroImage.style.transform = `translate3d(0, ${imageOffset}px, 0)`;
-            heroBlob.style.transform = `translate3d(0, ${blobOffset}px, 0)`;
-            ticking = false;
-        };
-
-        window.addEventListener('scroll', () => {
-            if (!ticking) {
-                window.requestAnimationFrame(updateParallax);
-                ticking = true;
-            }
-        }, { passive: true });
     }
 });

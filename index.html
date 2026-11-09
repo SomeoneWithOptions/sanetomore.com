@@ -19,7 +19,8 @@
     <meta name="twitter:image" content="https://sanetomore.com/assets/profile.jpg">
     <link rel="preload" href="assets/fonts/manrope-200-400-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="assets/fonts/italiana-400-latin.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" as="image" href="assets/profile-712.webp" imagesrcset="assets/profile-420.webp 420w, assets/profile-560.webp 560w, assets/profile-712.webp 712w" imagesizes="(max-width: 768px) 85vw, 30vw" type="image/webp">
+    <link rel="preload" href="assets/fonts/jetbrains-mono-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" as="image" href="assets/profile-712.webp" imagesrcset="assets/profile-420.webp 420w, assets/profile-560.webp 560w, assets/profile-712.webp 712w" imagesizes="(max-width: 768px) calc(100vw - 40px), (max-width: 1100px) and (orientation: portrait) calc(100vw - 80px), 36vw" type="image/webp">
     <script>document.documentElement.classList.add('js');</script>
     <style>
         @font-face {
@@ -40,11 +41,23 @@
             unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
         }
 
+        @font-face {
+            font-family: 'JetBrains Mono';
+            font-style: normal;
+            font-weight: 400;
+            font-display: swap;
+            src: url('assets/fonts/jetbrains-mono-400-latin.woff2') format('woff2');
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+        }
+
         :root {
             --bg-color: #121212;
             --text-color: #e0e0e0;
             --accent: #ff4d00;
             --grid-color: #333;
+            --hero-output: #a6a6a6;
+            --nav-h: 59px;
+            --hero-pad: 40px;
         }
 
         * {
@@ -75,62 +88,119 @@
             background: rgba(18, 18, 18, 0.96);
         }
 
+        .u-text-accent {
+            color: var(--accent);
+        }
+
+        /* Hero: a shell session. `whoami` prints the name, `uptime` prints the years (typed by script.js) */
         .hero {
             min-height: 100vh;
             min-height: 100svh;
-            display: flex;
-            align-items: flex-end;
-            padding: 40px;
-            position: relative;
+            padding: calc(var(--nav-h) + var(--hero-pad)) var(--hero-pad) var(--hero-pad);
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            column-gap: clamp(32px, 5vw, 88px);
+            align-items: end;
             border-bottom: 1px solid var(--grid-color);
             overflow: hidden;
         }
 
-        .hero__blob {
-            position: absolute;
-            top: -10%;
-            left: -10%;
-            width: 60vw;
-            height: 60vw;
-            border: 2px solid rgba(255, 77, 0, 0.2);
-            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
-            pointer-events: none;
-            z-index: 0;
+        .hero__session {
+            container-type: inline-size;
+            font-family: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+            font-size: clamp(1rem, 0.85rem + 0.4vw, 1.25rem);
+            line-height: 1.6;
         }
 
-        .hero__title {
-            font-size: 12vw;
-            line-height: 0.9;
-            font-weight: 400;
+        .hero__line {
+            min-height: 1.6em;
+        }
+
+        .hero__line + .hero__line {
+            margin-top: 0.15em;
+        }
+
+        .hero__line--output {
+            max-width: 52ch;
+            color: var(--hero-output);
+        }
+
+        .hero__line--output + .hero__line {
+            margin-top: 1em;
+        }
+
+        .hero__prompt {
+            margin-right: 1ch;
+            color: var(--accent);
+        }
+
+        .hero__name {
+            margin: 0.08em 0 0.14em;
             font-family: 'Italiana', Georgia, serif;
+            font-size: 11vw;
+            font-size: min(21cqi, 19vh);
+            font-weight: 400;
+            line-height: 0.92;
             letter-spacing: -0.02em;
-            z-index: 2;
-            mix-blend-mode: exclusion;
             color: #fff;
-            pointer-events: none;
-            display: flex;
-            flex-direction: column;
         }
 
-        .hero__line-wrapper {
-            overflow: hidden;
-            padding-bottom: 0.5vw;
-        }
-
-        .hero__line-text {
+        .hero__name-row {
             display: block;
+            overflow: hidden;
+            padding-bottom: 0.04em;
+        }
+
+        .hero__name-text {
+            display: block;
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Typing states: steps stay hidden until script.js shows them; 6s failsafe if the script never runs */
+        .js .hero--typing .hero__step {
+            visibility: hidden;
+            animation: hero-step-failsafe 0s linear 6s forwards;
+        }
+
+        .js .hero--typing .hero__step--shown {
+            visibility: visible;
+            animation: none;
+        }
+
+        .js .hero--typing .hero__name-text {
             transform: translate3d(0, 110%, 0);
+            animation: hero-name-failsafe 0s linear 6s forwards;
+        }
+
+        .js .hero--typing .hero__step--shown .hero__name-text {
+            transform: translate3d(0, 0, 0);
+            animation: none;
+        }
+
+        .js .hero--typing .hero__step--shown .hero__name-row + .hero__name-row .hero__name-text {
+            transition-delay: 0.1s;
+        }
+
+        @keyframes hero-step-failsafe {
+            to {
+                visibility: visible;
+            }
+        }
+
+        @keyframes hero-name-failsafe {
+            to {
+                transform: translate3d(0, 0, 0);
+            }
         }
 
         .hero__image-wrapper {
-            position: absolute;
-            top: 10vh;
-            right: 15vw;
-            height: 75vh;
+            position: relative;
+            height: calc(100vh - var(--nav-h) - var(--hero-pad) * 2);
+            height: calc(100svh - var(--nav-h) - var(--hero-pad) * 2);
+            max-height: 860px;
             aspect-ratio: 712 / 1108;
-            border-radius: 12px;
+            border-radius: 4px;
             overflow: hidden;
-            z-index: 1;
             contain: layout paint;
             box-shadow: 0 0 0 rgba(255, 77, 0, 0);
             transition: box-shadow 0.12s steps(2, end);
@@ -140,7 +210,7 @@
             box-shadow: 6px 6px 0 rgba(255, 77, 0, 0.2);
         }
 
-        /* Photo intro cover: only with JS, removed by script.js or the 1.5s failsafe */
+        /* Photo intro: orange pixel sweep drawn by script.js over the visible image (keeps LCP intact) */
         .hero__intro {
             display: none;
             position: absolute;
@@ -171,73 +241,64 @@
             }
         }
 
-        @media (prefers-reduced-motion: reduce) {
-            .js .hero__intro {
-                display: none;
-            }
-        }
-
         .hero__picture,
-        .hero__image-container,
-        .hero__parallax-img {
+        .hero__image {
             display: block;
             width: 100%;
             height: 100%;
         }
 
-        .hero__parallax-img {
+        .hero__image {
             object-fit: cover;
             object-position: center;
         }
 
+        /* Hero stacks (photo on top) on phones and portrait tablets */
+        @media (max-width: 768px), (max-width: 1100px) and (orientation: portrait) {
+            .hero {
+                min-height: auto;
+                grid-template-columns: 1fr;
+                row-gap: 32px;
+                padding-top: calc(var(--nav-h) + 24px);
+                padding-bottom: 48px;
+            }
+
+            .hero__image-wrapper {
+                grid-row: 1;
+                width: 100%;
+                height: auto;
+                max-height: 56vh;
+                max-height: 56svh;
+                aspect-ratio: 4 / 5;
+            }
+
+            .hero__image {
+                object-position: 50% 20%;
+            }
+
+            .hero__name {
+                font-size: 19vw;
+                font-size: 21cqi;
+            }
+        }
+
         @media (max-width: 768px) {
+            :root {
+                --hero-pad: 20px;
+            }
+
             .site-nav {
                 padding: 20px;
             }
 
-            .hero {
-                padding: 20px 20px 60px;
-                padding-top: 100px;
-                flex-direction: column;
-                justify-content: flex-start;
-                align-items: center;
-                text-align: center;
-                min-height: auto;
+            .hero__session {
+                font-size: 1rem;
             }
+        }
 
-            .hero__blob {
-                width: 90vw;
-                height: 90vw;
-                left: -20%;
-            }
-
-            .hero__title {
-                width: 100%;
-                order: 1;
-                font-size: 11vw;
-                line-height: 1.1;
-                margin-bottom: 20px;
-                mix-blend-mode: normal;
-                color: var(--text-color);
-            }
-
-            .hero__line-text {
-                transform: none;
-            }
-
-            .hero__image-wrapper {
-                position: relative;
-                top: auto;
-                right: auto;
-                width: 85%;
-                max-width: 400px;
-                height: auto;
-                order: 2;
-                margin-left: 5vw;
-            }
-
-            .hero__image-wrapper--active {
-                box-shadow: 4px 4px 0 rgba(255, 77, 0, 0.18);
+        @media (prefers-reduced-motion: reduce) {
+            .js .hero__intro {
+                display: none;
             }
         }
     </style>
@@ -252,26 +313,27 @@
     </nav>
 
     <main>
-        <header class="hero">
-            <div class="hero__blob"></div>
-            <h1 class="hero__title">
-                <div class="hero__line-wrapper">
-                    <span class="hero__line-text">ANDRES</span>
-                </div>
-                <div class="hero__line-wrapper">
-                    <span class="hero__line-text">CASTELLANOS</span>
-                </div>
-            </h1>
+        <header class="hero hero--typing">
+            <div class="hero__session">
+                <p class="hero__line hero__step" data-type><span class="hero__prompt" aria-hidden="true">~ $</span><span class="hero__cmd">whoami</span></p>
+                <h1 class="hero__name hero__step">
+                    <span class="hero__name-row"><span class="hero__name-text">Andres</span></span>
+                    <span class="hero__name-row"><span class="hero__name-text">Castellanos</span></span>
+                </h1>
+                <p class="hero__line hero__step" data-type><span class="hero__prompt" aria-hidden="true">~ $</span><span class="hero__cmd">uptime</span></p>
+                <p class="hero__line hero__line--output hero__step">up 12 years in IT and cloud infrastructure</p>
+                <p class="hero__line hero__step" aria-hidden="true"><span class="hero__prompt">~ $</span><span class="hero__caret"></span></p>
+            </div>
             <div class="hero__image-wrapper">
-                <picture class="hero__picture hero__image-container">
+                <picture class="hero__picture">
                     <source
                         type="image/webp"
                         srcset="assets/profile-420.webp 420w, assets/profile-560.webp 560w, assets/profile-712.webp 712w"
-                        sizes="(max-width: 768px) 85vw, 30vw">
+                        sizes="(max-width: 768px) calc(100vw - 40px), (max-width: 1100px) and (orientation: portrait) calc(100vw - 80px), 36vw">
                     <img
                         src="assets/profile.jpg"
                         alt="Portrait of Andres Castellanos"
-                        class="hero__parallax-img"
+                        class="hero__image"
                         width="712"
                         height="1108"
                         fetchpriority="high">
@@ -283,8 +345,8 @@
         <section class="grid-section about">
             <div class="grid-section__item grid-section__label">(ABOUT)</div>
             <div class="grid-section__item">
-                <p class="about__headline reveal">I make tools talk to each other<span class="u-sr-only">.</span><span class="about__cursor" aria-hidden="true"></span></p>
-                <p class="about__text reveal">Hey! I'm a SysOps Admin with <span class="counter" data-target="12">0</span> years of IT & Cloud infrastructure experience. Specializing in automation, turning manual chaos into streamlined workflows so teams can move faster.</p>
+                <p class="about__headline reveal">I make tools talk to each other<span class="u-text-accent">.</span></p>
+                <p class="about__text reveal">Hey! I'm a SysOps Admin specializing in automation, turning manual chaos into streamlined workflows so teams can move faster.</p>
                 <p class="about__text reveal">Currently @ <a href="https://vineskills.com/" target="_blank" rel="noopener noreferrer" class="link-hover link-hover--vineskills">Vineskills</a></p>
             </div>
         </section>
