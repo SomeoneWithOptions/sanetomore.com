@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const heroBlob = document.querySelector('.hero__blob');
     const heroLines = document.querySelectorAll('.hero__line-text');
     const heroWrapper = document.querySelector('.hero__image-wrapper');
+    const heroIntro = document.querySelector('.hero__intro');
     const revealElements = document.querySelectorAll('.reveal');
     const counters = document.querySelectorAll('.counter');
     const spriteItems = document.querySelectorAll('.interests__item[data-sprite]');
@@ -157,15 +158,106 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    if (heroWrapper) {
-        if (prefersReducedMotion) {
+    const finishHeroIntro = () => {
+        if (heroIntro) {
+            heroIntro.classList.add('hero__intro--done');
+        }
+
+        if (heroWrapper) {
             heroWrapper.classList.add('hero__image-wrapper--active');
+        }
+    };
+
+    /* Orange pixel sweep: a diagonal band of accent blocks uncovers the portrait (10 frames, 300ms). */
+    const runHeroSweep = () => {
+        const rect = heroWrapper.getBoundingClientRect();
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const width = Math.round(rect.width * dpr);
+        const height = Math.round(rect.height * dpr);
+        const ctx = heroIntro.getContext('2d');
+
+        if (!ctx || width === 0 || height === 0) {
+            finishHeroIntro();
+            return;
+        }
+
+        heroIntro.width = width;
+        heroIntro.height = height;
+
+        const rootStyles = getComputedStyle(document.documentElement);
+        const bgColor = rootStyles.getPropertyValue('--bg-color').trim() || '#121212';
+        const accentColor = rootStyles.getPropertyValue('--accent').trim() || '#ff4d00';
+        const cols = 12;
+        const block = width / cols;
+        const blockSize = Math.ceil(block) + 1;
+        const rows = Math.ceil(height / block);
+        const band = 2;
+        const frameCount = 10;
+        const frameMs = 30;
+        const reach = cols + rows - 2 + band + 1;
+        let frame = 0;
+        let lastTime = 0;
+
+        const drawFrame = (index) => {
+            const front = ((index + 1) / frameCount) * reach;
+
+            ctx.clearRect(0, 0, width, height);
+
+            for (let y = 0; y < rows; y += 1) {
+                for (let x = 0; x < cols; x += 1) {
+                    const diagonal = x + y;
+
+                    if (diagonal >= front - band) {
+                        ctx.fillStyle = diagonal < front ? accentColor : bgColor;
+                        ctx.fillRect(Math.floor(x * block), Math.floor(y * block), blockSize, blockSize);
+                    }
+                }
+            }
+        };
+
+        const tick = (now) => {
+            if (frame > 0 && now - lastTime < frameMs) {
+                requestAnimationFrame(tick);
+                return;
+            }
+
+            if (frame === frameCount) {
+                ctx.clearRect(0, 0, width, height);
+                finishHeroIntro();
+                return;
+            }
+
+            drawFrame(frame);
+
+            if (frame === 0) {
+                heroIntro.classList.add('hero__intro--running');
+            }
+
+            frame += 1;
+            lastTime = now;
+            requestAnimationFrame(tick);
+        };
+
+        requestAnimationFrame(tick);
+    };
+
+    if (heroWrapper) {
+        if (prefersReducedMotion || !heroIntro || !heroImage) {
+            finishHeroIntro();
         } else {
-            window.requestAnimationFrame(() => {
-                window.requestAnimationFrame(() => {
-                    heroWrapper.classList.add('hero__image-wrapper--active');
-                });
-            });
+            const startHeroSweep = () => {
+                /* The CSS failsafe hides the cover at 1.5s; past that, skip the sweep to avoid a late flash. */
+                if (performance.now() > 1400) {
+                    finishHeroIntro();
+                    return;
+                }
+
+                runHeroSweep();
+            };
+
+            const decoded = typeof heroImage.decode === 'function' ? heroImage.decode() : Promise.resolve();
+
+            decoded.then(startHeroSweep, finishHeroIntro);
         }
     }
 
