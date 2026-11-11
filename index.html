@@ -56,6 +56,7 @@
             --accent: #ff4d00;
             --grid-color: #333;
             --hero-output: #a6a6a6;
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
             --nav-h: 59px;
             --hero-pad: 40px;
         }
@@ -253,6 +254,16 @@
             object-position: center;
         }
 
+        /* Portrait eases back into its frame once the sweep finishes */
+        .js .hero__image {
+            transform: scale(1.045);
+            transition: transform 1.6s var(--ease-out);
+        }
+
+        .js .hero__image-wrapper--active .hero__image {
+            transform: scale(1);
+        }
+
         /* Hero stacks (photo on top) on phones and portrait tablets */
         @media (max-width: 768px), (max-width: 1100px) and (orientation: portrait) {
             .hero {
@@ -299,6 +310,11 @@
         @media (prefers-reduced-motion: reduce) {
             .js .hero__intro {
                 display: none;
+            }
+
+            .js .hero__image {
+                transform: none;
+                transition: none;
             }
         }
     </style>
@@ -347,7 +363,7 @@
             <div class="grid-section__item">
                 <p class="about__headline reveal">I make tools talk to each other<span class="u-text-accent">.</span></p>
                 <p class="about__text reveal">Hey! I'm a SysOps Admin specializing in automation, turning manual chaos into streamlined workflows so teams can move faster.</p>
-                <p class="about__text reveal">Currently @ <a href="https://vineskills.com/" target="_blank" rel="noopener noreferrer" class="link-hover link-hover--vineskills">Vineskills</a></p>
+                <p class="about__text reveal">Currently @ <a href="https://vineskills.com/" target="_blank" rel="noopener noreferrer" class="link-hover link-hover--vineskills">Vineskills<svg class="pixel-arrow" viewBox="0 0 7 7" fill="currentColor" aria-hidden="true" focusable="false"><path d="M2 0h5v5H6V1H2zM5 1h1v1H5zM4 2h1v1H4zM3 3h1v1H3zM2 4h1v1H2zM1 5h1v1H1zM0 6h1v1H0z"/></svg></a></p>
             </div>
         </section>
 
@@ -364,15 +380,20 @@
         <section class="grid-section contact">
             <div class="grid-section__item grid-section__label">(CONTACT)</div>
             <div class="grid-section__item contact__list">
-                <a href="https://diafestivo.co/" target="_blank" rel="noopener noreferrer" class="magnetic-link reveal">Diafestivo</a>
-                <a href="https://www.linkedin.com/in/sanetomore" target="_blank" rel="noopener noreferrer" class="magnetic-link reveal">LinkedIn</a>
-                <a href="https://www.instagram.com/sanetomore" target="_blank" rel="noopener noreferrer" class="magnetic-link reveal">Instagram</a>
-                <a href="https://github.com/SomeoneWithOptions" target="_blank" rel="noopener noreferrer" class="magnetic-link reveal">GitHub</a>
-                <a href="mailto:acastesol@gmail.com" class="magnetic-link reveal">Email</a>
-                <a href="https://cal.com/sanetomore" target="_blank" rel="noopener noreferrer" class="magnetic-link reveal">Let's Talk</a>
+                <a href="https://diafestivo.co/" target="_blank" rel="noopener noreferrer" class="magnetic-link reveal">Diafestivo<span class="magnetic-link__hint" aria-hidden="true"><svg class="pixel-arrow" viewBox="0 0 7 7" fill="currentColor" aria-hidden="true" focusable="false"><path d="M2 0h5v5H6V1H2zM5 1h1v1H5zM4 2h1v1H4zM3 3h1v1H3zM2 4h1v1H2zM1 5h1v1H1zM0 6h1v1H0z"/></svg>diafestivo.co</span></a>
+                <a href="https://www.linkedin.com/in/sanetomore" target="_blank" rel="noopener noreferrer" class="magnetic-link reveal">LinkedIn<span class="magnetic-link__hint" aria-hidden="true"><svg class="pixel-arrow" viewBox="0 0 7 7" fill="currentColor" aria-hidden="true" focusable="false"><path d="M2 0h5v5H6V1H2zM5 1h1v1H5zM4 2h1v1H4zM3 3h1v1H3zM2 4h1v1H2zM1 5h1v1H1zM0 6h1v1H0z"/></svg>linkedin.com/in/sanetomore</span></a>
+                <a href="https://www.instagram.com/sanetomore" target="_blank" rel="noopener noreferrer" class="magnetic-link reveal">Instagram<span class="magnetic-link__hint" aria-hidden="true"><svg class="pixel-arrow" viewBox="0 0 7 7" fill="currentColor" aria-hidden="true" focusable="false"><path d="M2 0h5v5H6V1H2zM5 1h1v1H5zM4 2h1v1H4zM3 3h1v1H3zM2 4h1v1H2zM1 5h1v1H1zM0 6h1v1H0z"/></svg>instagram.com/sanetomore</span></a>
+                <a href="https://github.com/SomeoneWithOptions" target="_blank" rel="noopener noreferrer" class="magnetic-link reveal">GitHub<span class="magnetic-link__hint" aria-hidden="true"><svg class="pixel-arrow" viewBox="0 0 7 7" fill="currentColor" aria-hidden="true" focusable="false"><path d="M2 0h5v5H6V1H2zM5 1h1v1H5zM4 2h1v1H4zM3 3h1v1H3zM2 4h1v1H2zM1 5h1v1H1zM0 6h1v1H0z"/></svg>github.com/SomeoneWithOptions</span></a>
+                <a href="mailto:acastesol@gmail.com" class="magnetic-link reveal">Email<span class="magnetic-link__hint" aria-hidden="true">acastesol@gmail.com</span></a>
+                <a href="https://cal.com/sanetomore" target="_blank" rel="noopener noreferrer" class="magnetic-link reveal">Let's Talk<span class="magnetic-link__hint" aria-hidden="true"><svg class="pixel-arrow" viewBox="0 0 7 7" fill="currentColor" aria-hidden="true" focusable="false"><path d="M2 0h5v5H6V1H2zM5 1h1v1H5zM4 2h1v1H4zM3 3h1v1H3zM2 4h1v1H2zM1 5h1v1H1zM0 6h1v1H0z"/></svg>cal.com/sanetomore</span></a>
             </div>
         </section>
     </main>
+
+    <footer class="site-footer">
+        <p class="site-footer__line"><span class="site-footer__prompt" aria-hidden="true">~ $</span><span class="site-footer__cmd">exit</span></p>
+        <p class="site-footer__line site-footer__line--output">Connection to sanetomore.com closed.</p>
+    </footer>
 
     <script src="script.js" defer></script>
 </body>

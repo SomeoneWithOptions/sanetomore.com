@@ -40,6 +40,8 @@
     --accent: #ff4d00;
     --grid-color: #333;
     --hero-output: #a6a6a6;
+    --text-dim: #6f6f6f;
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     --nav-h: 59px;
     --hero-pad: 40px;
     --pixel: 3px;
@@ -47,6 +49,7 @@
 
 html {
     scroll-behavior: smooth;
+    scrollbar-color: var(--grid-color) var(--bg-color);
 }
 
 * {
@@ -60,6 +63,17 @@ body {
     color: var(--text-color);
     font-family: 'Manrope', 'Segoe UI', sans-serif;
     overflow-x: hidden;
+}
+
+::selection {
+    background-color: var(--accent);
+    color: var(--bg-color);
+}
+
+a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 6px;
+    border-radius: 2px;
 }
 
 /* Site Nav */
@@ -152,13 +166,25 @@ body {
     transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.hero__caret {
+/* Block caret: blinks on the idle prompt, stays solid behind a command while script.js types it */
+.hero__caret,
+.hero__line--typing .hero__cmd::after,
+.site-footer--typing .site-footer__cmd::after {
     display: inline-block;
     width: 0.6em;
     height: 1.15em;
     vertical-align: -0.2em;
     background-color: var(--accent);
+}
+
+.hero__caret {
     animation: cursor-blink 1.1s steps(1, end) infinite;
+}
+
+.hero__line--typing .hero__cmd::after,
+.site-footer--typing .site-footer__cmd::after {
+    content: '';
+    margin-left: 1px;
 }
 
 /* Typing states: steps stay hidden until script.js shows them; 6s failsafe if the script never runs */
@@ -258,6 +284,16 @@ body {
     object-position: center;
 }
 
+/* Portrait eases back into its frame once the sweep finishes */
+.js .hero__image {
+    transform: scale(1.045);
+    transition: transform 1.6s var(--ease-out);
+}
+
+.js .hero__image-wrapper--active .hero__image {
+    transform: scale(1);
+}
+
 /* Grid Sections */
 .grid-section {
     display: grid;
@@ -284,6 +320,22 @@ body {
     margin-bottom: 30px;
     letter-spacing: -0.02em;
     line-height: 1.1;
+    text-wrap: balance;
+}
+
+/* The accent period blinks twice like the hero caret, then rests */
+.about__headline.reveal--active .u-text-accent {
+    animation: period-blink 0.8s steps(1, end) 0.75s 2;
+}
+
+@keyframes period-blink {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
 }
 
 .about__text {
@@ -292,6 +344,7 @@ body {
     max-width: 600px;
     margin-bottom: 20px;
     color: var(--text-color);
+    text-wrap: pretty;
 }
 
 .link-hover {
@@ -314,6 +367,22 @@ body {
 .link-hover--vineskills:hover {
     color: var(--accent);
     border-color: var(--accent);
+}
+
+/* Pixel arrow marks links that leave the site; it nudges up and out on hover */
+.pixel-arrow {
+    display: inline-block;
+    width: 0.5em;
+    height: 0.5em;
+    margin-left: 0.4em;
+    vertical-align: 0.08em;
+    shape-rendering: crispEdges;
+    transition: transform 0.12s steps(2, end);
+}
+
+.link-hover:hover .pixel-arrow,
+.link-hover:focus-visible .pixel-arrow {
+    transform: translate3d(2px, -2px, 0);
 }
 
 .u-text-accent {
@@ -339,8 +408,8 @@ body {
 /* Reveal Animation */
 .reveal {
     opacity: 0;
-    transform: translate3d(0, 30px, 0);
-    transition: opacity 0.8s cubic-bezier(0.5, 0, 0, 1), transform 0.8s cubic-bezier(0.5, 0, 0, 1);
+    transform: translate3d(0, 18px, 0);
+    transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
 }
 
 .reveal--active {
@@ -359,6 +428,8 @@ body {
 .interests__item {
     position: relative;
     padding-left: 20px;
+    cursor: default;
+    transition: color 0.2s;
 }
 
 .interests__item::before {
@@ -494,7 +565,34 @@ body {
     -webkit-font-smoothing: antialiased;
     transform-origin: left center;
     /* Entrance animation transition - matches .reveal */
-    transition: opacity 0.8s cubic-bezier(0.5, 0, 0, 1), transform 0.8s cubic-bezier(0.5, 0, 0, 1);
+    transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+}
+
+.magnetic-link:focus-visible {
+    outline-width: 1px;
+    outline-offset: 2px;
+}
+
+/* Destination, shown beside the link while it is hovered or focused */
+.magnetic-link__hint {
+    display: inline-block;
+    margin-left: 1.5rem;
+    font-family: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+    font-size: 0.85rem;
+    font-weight: 400;
+    vertical-align: middle;
+    color: var(--hero-output);
+    opacity: 0;
+    transform: translate3d(-8px, 0, 0);
+    transition: opacity 0.2s, transform 0.4s var(--ease-out);
+}
+
+.magnetic-link__hint .pixel-arrow {
+    width: 7px;
+    height: 7px;
+    margin: 0 0.7em 0 0;
+    vertical-align: 0;
+    color: var(--accent);
 }
 
 /* Smooth hover interaction once entrance is done */
@@ -504,12 +602,71 @@ body {
     transition-delay: 0.1s;
 }
 
-.contact__list .magnetic-link.reveal--complete:hover {
-    /* Hover-In values: snappy, no delay */
+.contact__list .magnetic-link.reveal--complete:hover,
+.contact__list .magnetic-link.reveal--complete:focus-visible {
+    /* Hover-In values: snappy, no delay. No scale: thin type shimmers when scaled */
     transition: color 0.2s cubic-bezier(0.22, 1, 0.36, 1), transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
     transition-delay: 0s;
     color: var(--accent);
-    transform: translate3d(15px, 0, 0) scale(1.02);
+    transform: translate3d(15px, 0, 0);
+}
+
+.contact__list .magnetic-link.reveal--complete:hover .magnetic-link__hint,
+.contact__list .magnetic-link.reveal--complete:focus-visible .magnetic-link__hint {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+}
+
+/* The other links step back while one has keyboard focus (hover version sits in the hover query below) */
+.contact__list:has(.magnetic-link:focus-visible) .magnetic-link.reveal--complete:not(:focus-visible) {
+    color: var(--text-dim);
+}
+
+/* Footer: the shell session that opens in the hero closes here (typed by script.js on scroll) */
+.site-footer {
+    padding: 40px;
+    font-family: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+    font-size: clamp(0.875rem, 0.8rem + 0.2vw, 1rem);
+    line-height: 1.6;
+}
+
+.site-footer__line {
+    min-height: 1.6em;
+}
+
+.site-footer__line--output {
+    color: var(--hero-output);
+}
+
+.site-footer__prompt {
+    margin-right: 1ch;
+    color: var(--accent);
+}
+
+.site-footer--pending .site-footer__line--output {
+    visibility: hidden;
+}
+
+/* Hover effects, only where the pointer can hover */
+@media (hover: hover) {
+    .hero__image-wrapper--active:hover {
+        box-shadow: 10px 10px 0 rgba(255, 77, 0, 0.32);
+    }
+
+    .interests__item:hover {
+        color: #fff;
+    }
+
+    .contact__list:hover .magnetic-link.reveal--complete:not(:hover) {
+        color: var(--text-dim);
+    }
+}
+
+/* Touch screens have no hover, so the hint would never show: leave it out */
+@media (hover: none), (max-width: 768px) {
+    .magnetic-link__hint {
+        display: none;
+    }
 }
 
 /* Responsive */
@@ -589,6 +746,10 @@ body {
         gap: 20px;
         font-size: 1.2rem;
     }
+
+    .site-footer {
+        padding: 32px 20px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -616,6 +777,17 @@ body {
         opacity: 1;
     }
 
+    .js .hero__image {
+        transition: none;
+        transform: none;
+    }
+
+    .pixel-arrow,
+    .magnetic-link__hint {
+        transition: none;
+    }
+
+    .about__headline.reveal--active .u-text-accent,
     .hero__caret,
     .interests__sprite--play .interests__sprite-frame--a,
     .interests__sprite--play .interests__sprite-frame--b,
