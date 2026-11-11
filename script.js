@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const heroIntro = document.querySelector('.hero__intro');
     const revealElements = document.querySelectorAll('.reveal');
     const spriteItems = document.querySelectorAll('.interests__item[data-sprite]');
+    const footer = document.querySelector('.site-footer');
+    const footerCommand = document.querySelector('.site-footer__cmd');
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     /* 8x8 pixel sprites, two frames each. '#' = filled pixel. */
@@ -101,6 +103,13 @@ document.addEventListener('DOMContentLoaded', () => {
         window.setTimeout(resolve, ms);
     });
 
+    const typeText = async (target, text) => {
+        for (const char of text) {
+            target.textContent += char;
+            await wait(55 + Math.random() * 55);
+        }
+    };
+
     const typeCommand = async (line) => {
         const command = line.querySelector('.hero__cmd');
 
@@ -111,16 +120,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const text = command.textContent;
 
+        /* The --typing class keeps the block caret behind the command until its output prints. */
         command.textContent = '';
-        line.classList.add('hero__step--shown');
+        line.classList.add('hero__step--shown', 'hero__line--typing');
         await wait(280);
-
-        for (const char of text) {
-            command.textContent += char;
-            await wait(55 + Math.random() * 55);
-        }
-
+        await typeText(command, text);
         await wait(200);
+        line.classList.remove('hero__line--typing');
     };
 
     const runHeroSession = async () => {
@@ -140,6 +146,33 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             runHeroSession();
         }
+    }
+
+    /* Footer: the session closes. Type `exit` once the footer scrolls into view, then print the closing line. */
+    if (footer && footerCommand && !prefersReducedMotion && 'IntersectionObserver' in window) {
+        const exitText = footerCommand.textContent;
+
+        const closeFooterSession = async () => {
+            footer.classList.add('site-footer--typing');
+            await wait(350);
+            await typeText(footerCommand, exitText);
+            await wait(280);
+            footer.classList.remove('site-footer--typing', 'site-footer--pending');
+        };
+
+        footerCommand.textContent = '';
+        footer.classList.add('site-footer--pending');
+
+        const footerObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    observer.unobserve(entry.target);
+                    closeFooterSession();
+                }
+            });
+        }, { threshold: 0.6 });
+
+        footerObserver.observe(footer);
     }
 
     const finishHeroIntro = () => {
