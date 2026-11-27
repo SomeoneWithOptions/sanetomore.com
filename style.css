@@ -43,7 +43,6 @@
     --text-dim: #6f6f6f;
     --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     --nav-h: 59px;
-    --hero-pad: 40px;
     --pixel: 3px;
 }
 
@@ -104,13 +103,13 @@ a:focus-visible {
 
 /* Hero: a shell session. `whoami` prints the name, `uptime` prints the years (typed by script.js) */
 .hero {
-    min-height: 100vh;
-    min-height: 100svh;
-    padding: calc(var(--nav-h) + var(--hero-pad)) var(--hero-pad) var(--hero-pad);
+    --hero-space: clamp(2rem, 6vh, 5rem);
+    padding-block: calc(var(--nav-h) + var(--hero-space)) var(--hero-space);
+    padding-inline: max(clamp(1.25rem, 4vw, 3rem), (100% - 80rem) / 2);
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    column-gap: clamp(32px, 5vw, 88px);
-    align-items: end;
+    grid-template-columns: minmax(0, 1fr) min(30vw, 25rem);
+    gap: clamp(1.5rem, 3.5vw, 3.5rem);
+    align-items: center;
     border-bottom: 1px solid var(--grid-color);
     overflow: hidden;
 }
@@ -147,8 +146,8 @@ a:focus-visible {
 .hero__name {
     margin: 0.08em 0 0.14em;
     font-family: 'Italiana', Georgia, serif;
-    font-size: 11vw;
-    font-size: min(21cqi, 19vh);
+    font-size: min(12vw, 11.25rem);
+    font-size: min(22cqi, 11.25rem);
     font-weight: 400;
     line-height: 0.92;
     letter-spacing: -0.02em;
@@ -226,10 +225,8 @@ a:focus-visible {
 
 .hero__image-wrapper {
     position: relative;
-    height: calc(100vh - var(--nav-h) - var(--hero-pad) * 2);
-    height: calc(100svh - var(--nav-h) - var(--hero-pad) * 2);
-    max-height: 860px;
-    aspect-ratio: 712 / 1108;
+    width: 100%;
+    aspect-ratio: 4 / 5;
     border-radius: 4px;
     overflow: hidden;
     contain: layout paint;
@@ -281,7 +278,7 @@ a:focus-visible {
 
 .hero__image {
     object-fit: cover;
-    object-position: center;
+    object-position: 50% 15%;
 }
 
 /* Portrait eases back into its frame once the sweep finishes */
@@ -670,40 +667,28 @@ a:focus-visible {
 }
 
 /* Responsive */
-/* Hero stacks (photo on top) on phones and portrait tablets */
-@media (max-width: 768px), (max-width: 1100px) and (orientation: portrait) {
+@media (max-width: 700px) {
     .hero {
-        min-height: auto;
-        grid-template-columns: 1fr;
-        row-gap: 32px;
-        padding-top: calc(var(--nav-h) + 24px);
-        padding-bottom: 48px;
+        --hero-space: 1.75rem;
+        grid-template-columns: minmax(0, 1fr);
+        padding-inline: max(1.25rem, (100% - 30rem) / 2);
     }
 
     .hero__image-wrapper {
-        grid-row: 1;
-        width: 100%;
-        height: auto;
-        max-height: 56vh;
-        max-height: 56svh;
-        aspect-ratio: 4 / 5;
+        aspect-ratio: 1;
     }
 
     .hero__image {
-        object-position: 50% 20%;
+        object-position: 50% 8%;
     }
 
     .hero__name {
-        font-size: 19vw;
-        font-size: 21cqi;
+        font-size: min(18vw, 6.6rem);
+        font-size: 22cqi;
     }
 }
 
 @media (max-width: 768px) {
-    :root {
-        --hero-pad: 20px;
-    }
-
     .site-nav {
         padding: 20px;
     }

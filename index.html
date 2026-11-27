@@ -20,7 +20,7 @@
     <link rel="preload" href="assets/fonts/manrope-200-400-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="assets/fonts/italiana-400-latin.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="assets/fonts/jetbrains-mono-400-latin.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" as="image" href="assets/profile-712.webp" imagesrcset="assets/profile-420.webp 420w, assets/profile-560.webp 560w, assets/profile-712.webp 712w" imagesizes="(max-width: 768px) calc(100vw - 40px), (max-width: 1100px) and (orientation: portrait) calc(100vw - 80px), 36vw" type="image/webp">
+    <link rel="preload" as="image" href="assets/profile-712.webp" imagesrcset="assets/profile-420.webp 420w, assets/profile-560.webp 560w, assets/profile-712.webp 712w" imagesizes="(max-width: 700px) min(calc(100vw - 2.5rem), 30rem), min(30vw, 25rem)" type="image/webp">
     <script>document.documentElement.classList.add('js');</script>
     <style>
         @font-face {
@@ -58,7 +58,6 @@
             --hero-output: #a6a6a6;
             --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
             --nav-h: 59px;
-            --hero-pad: 40px;
         }
 
         * {
@@ -95,13 +94,13 @@
 
         /* Hero: a shell session. `whoami` prints the name, `uptime` prints the years (typed by script.js) */
         .hero {
-            min-height: 100vh;
-            min-height: 100svh;
-            padding: calc(var(--nav-h) + var(--hero-pad)) var(--hero-pad) var(--hero-pad);
+            --hero-space: clamp(2rem, 6vh, 5rem);
+            padding-block: calc(var(--nav-h) + var(--hero-space)) var(--hero-space);
+            padding-inline: max(clamp(1.25rem, 4vw, 3rem), (100% - 80rem) / 2);
             display: grid;
-            grid-template-columns: minmax(0, 1fr) auto;
-            column-gap: clamp(32px, 5vw, 88px);
-            align-items: end;
+            grid-template-columns: minmax(0, 1fr) min(30vw, 25rem);
+            gap: clamp(1.5rem, 3.5vw, 3.5rem);
+            align-items: center;
             border-bottom: 1px solid var(--grid-color);
             overflow: hidden;
         }
@@ -138,8 +137,8 @@
         .hero__name {
             margin: 0.08em 0 0.14em;
             font-family: 'Italiana', Georgia, serif;
-            font-size: 11vw;
-            font-size: min(21cqi, 19vh);
+            font-size: min(12vw, 11.25rem);
+            font-size: min(22cqi, 11.25rem);
             font-weight: 400;
             line-height: 0.92;
             letter-spacing: -0.02em;
@@ -196,10 +195,8 @@
 
         .hero__image-wrapper {
             position: relative;
-            height: calc(100vh - var(--nav-h) - var(--hero-pad) * 2);
-            height: calc(100svh - var(--nav-h) - var(--hero-pad) * 2);
-            max-height: 860px;
-            aspect-ratio: 712 / 1108;
+            width: 100%;
+            aspect-ratio: 4 / 5;
             border-radius: 4px;
             overflow: hidden;
             contain: layout paint;
@@ -251,7 +248,7 @@
 
         .hero__image {
             object-fit: cover;
-            object-position: center;
+            object-position: 50% 15%;
         }
 
         /* Portrait eases back into its frame once the sweep finishes */
@@ -264,40 +261,28 @@
             transform: scale(1);
         }
 
-        /* Hero stacks (photo on top) on phones and portrait tablets */
-        @media (max-width: 768px), (max-width: 1100px) and (orientation: portrait) {
+        @media (max-width: 700px) {
             .hero {
-                min-height: auto;
-                grid-template-columns: 1fr;
-                row-gap: 32px;
-                padding-top: calc(var(--nav-h) + 24px);
-                padding-bottom: 48px;
+                --hero-space: 1.75rem;
+                grid-template-columns: minmax(0, 1fr);
+                padding-inline: max(1.25rem, (100% - 30rem) / 2);
             }
 
             .hero__image-wrapper {
-                grid-row: 1;
-                width: 100%;
-                height: auto;
-                max-height: 56vh;
-                max-height: 56svh;
-                aspect-ratio: 4 / 5;
+                aspect-ratio: 1;
             }
 
             .hero__image {
-                object-position: 50% 20%;
+                object-position: 50% 8%;
             }
 
             .hero__name {
-                font-size: 19vw;
-                font-size: 21cqi;
+                font-size: min(18vw, 6.6rem);
+                font-size: 22cqi;
             }
         }
 
         @media (max-width: 768px) {
-            :root {
-                --hero-pad: 20px;
-            }
-
             .site-nav {
                 padding: 20px;
             }
@@ -345,7 +330,7 @@
                     <source
                         type="image/webp"
                         srcset="assets/profile-420.webp 420w, assets/profile-560.webp 560w, assets/profile-712.webp 712w"
-                        sizes="(max-width: 768px) calc(100vw - 40px), (max-width: 1100px) and (orientation: portrait) calc(100vw - 80px), 36vw">
+                        sizes="(max-width: 700px) min(calc(100vw - 2.5rem), 30rem), min(30vw, 25rem)">
                     <img
                         src="assets/profile.jpg"
                         alt="Portrait of Andres Castellanos"
